@@ -18,6 +18,8 @@ SRC_DIR			=	src/
 # Source File
 SRC				=	$(addprefix src/, \
 					minirt.c \
+					restir/restir_utils.c \
+					restir/light_sampling.c \
 					$(UTILS) \
 					)
 

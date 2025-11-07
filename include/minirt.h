@@ -14,8 +14,8 @@
 # include "libft.h"			// LibFT
 
 # include "prototype.h"
+# include "restir.h"
 # include "struct.h"
-# include "ris.h"
 
 //••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
 #endif
