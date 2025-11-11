@@ -15,7 +15,7 @@
 // Extracts a substring from a string.
 // Creates new string from 's' starting at 'start' of length 'len'.
 // Returns the new string or NULL if allocation fails.
-char	*ft_substr(char const *s, unsigned int start, size_t len)
+char	*ft_substr(char const *s, t_ui32 start, size_t len)
 {
 	char	*substr;
 	size_t	i;

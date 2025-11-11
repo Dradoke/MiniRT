@@ -20,7 +20,7 @@
 # endif
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 10
+#  define BUFFER_SIZE 100
 # endif
 
 typedef struct s_all
@@ -38,6 +38,5 @@ char	*make_line(char *buf, int fd, char **buff);
 int		linelen(char *str, int *nl);
 void	cpybuf(char *line, char *buf, size_t *li);
 char	*ft_calloc_char(size_t size);
-char	*ft_realloc(char *s1, size_t size);
 
 #endif

@@ -2,6 +2,11 @@
 # define MINIRT_H
 //••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
 
+# define WIDTH 256
+# define HEIGHT 256
+
+//••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+
 # include <unistd.h>		// read, write, close
 # include <fcntl.h>			// open
 # include <stdlib.h>		// malloc, free, exit
@@ -15,6 +20,7 @@
 
 # include "prototype.h"
 # include "struct.h"
+# include "fterr.h"
 
 //••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
 #endif

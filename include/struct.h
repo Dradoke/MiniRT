@@ -1,32 +1,180 @@
 #ifndef STRUCT_H
 # define STRUCT_H
 # include "minirt.h"
-//••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
-// MLX42
 
-//••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+//•••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••• GLOBAL STRUCT
 
-typedef enum e_bool
+typedef struct s_data
 {
-	FALSE,		// 0
-	TRUE,		// 1
-}	t_bool;
+	mlx_t		*mlx;
+	mlx_image_t	*img;
+	t_scene		scene;
+	t_list		*parse_list;
+}	t_data;
 
-typedef struct s_rgba
+typedef struct s_scene
 {
-    unsigned char	r;	// >=0 && <=255
-    unsigned char	g;	// >=0 && <=255
-    unsigned char	b;	// >=0 && <=255
-    unsigned char	a;	// >=0 && <=255
+	t_cam	cam;
+	t_light	*light;
+	t_mesh	*mesh;
+}	t_scene;
+
+//••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••• ENUM
+
+typedef enum e_type
+{
+	NONE,
+	A,
+	C,
+	L,
+	sp,
+	pl,
+	cy,
+	tr,
+}	t_type;
+
+//•••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••• MLX42
+
+typedef struct s_vec3
+{
+	t_f64	x;
+	t_f64	y;
+	t_f64	z;
+}	t_vec3;
+
+typedef struct s_ray
+{
+	t_vec3	origin;
+	t_vec3	dir;
+}	t_ray;
+
+typedef struct s_mat4
+{
+	t_f64	m[4][4];
+}	t_mat4;
+
+//•••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••• LIST NODE
+
+typedef struct s_node
+{
+	t_type	type;
+	union
+	{
+		t_ambient_light		ambient_light;
+		t_cam				cam;
+		t_point_light		point_light;
+		t_sphere			sphere;
+		t_plane				plane;
+		t_cylinder			cylinder;
+		t_triangle			triangle;
+	}	u_data;
+}	t_node;
+
+//••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••• CAMERA
+
+typedef struct s_cam
+{
+	t_vec3	location;
+	t_vec3	rotation;
+	t_i8	aov;
+}	t_cam;
+
+//•••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••• LIGHT
+
+typedef struct s_light
+{
+	t_type	type;
+	t_mat4	transform;
+	t_mat4	inv_transform;
+	union
+	{
+		t_ambient_light		ambient_light;
+		t_point_light		point_light;
+	}	u_data;
+}	t_light;
+
+typedef struct s_ambient_light
+{
+	t_f32	brightness;
+	t_rgba	color;
+}	t_ambient_light;
+
+typedef struct s_point_light
+{
+	t_vec3	location;
+	t_f32	brightness;
+	t_rgba	color;
+}	t_point_light;
+
+//••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••• MESH
+
+typedef struct s_mesh
+{
+	t_type	type;
+	t_mat4	transform;
+	t_mat4	inv_transform;
+	union
+	{
+		t_sphere	sphere;
+		t_plane		plane;
+		t_cylinder	cylinder;
+		t_triangle	triangle;
+	}	u_data;
+}	t_mesh;
+
+typedef struct s_sphere
+{
+	t_vec3	location;
+	t_f32	diameter;
+	t_ui32	color;
+}	t_sphere;
+
+typedef struct s_plane
+{
+	t_vec3	location;
+	t_vec3	rotation;
+	t_ui32	color;
+}	t_plane;
+
+typedef struct s_cylinder
+{
+	t_vec3			location;
+	t_vec3			rotation;
+	t_f64			diameter;
+	t_f64			height;
+	t_ui32			color;
+}	t_cylinder;
+
+typedef struct s_triangle
+{
+	t_vec3			vertex1;
+	t_vec3			vertex2;
+	t_vec3			vertex3;
+}	t_triangle;
+
+//•••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••• COLOR
+
+enum	e_rgb
+{
+	R,
+	G,
+	B,
+	A,
+};
+
+typedef union u_rgba
+{
+	struct
+	{
+		t_ui8	r;
+		t_ui8	g;
+		t_ui8	b;
+		t_ui8	a;
+	};
+	t_ui8	rgba[4];
+	t_ui32	color;
 }	t_rgba;
 
-typedef struct s_hsba
-{
-    unsigned char	h;	// >=0 && <=255
-    unsigned char	s;	// >=0 && <=255
-    unsigned char	b;	// >=0 && <=255
-    unsigned char	a;	// >=0 && <=255
-}	t_hsba;
-
 //••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+
 #endif

@@ -29,29 +29,6 @@ char	*ft_calloc_char(size_t size)
 	return (new);
 }
 
-// Reallocates a string to a new size.
-// Copies content from 's1' to a new string of 'size' bytes.
-// Returns a pointer to the new string or NULL if allocation fails.
-char	*ft_realloc(char *s1, size_t size)
-{
-	char	*s2;
-	size_t	i;
-
-	i = 0;
-	if (!s1)
-		return (ft_calloc_char(size));
-	s2 = ft_calloc_char(size);
-	if (!s2)
-		return (free(s1), NULL);
-	while (s1[i] && i < size - 1)
-	{
-		s2[i] = s1[i];
-		i++;
-	}
-	free(s1);
-	return (s2);
-}
-
 // Calculates length of a line and checks for newline character.
 // Stores position of newline in nl[0] and sets nl[1] if newline was found.
 // Returns the number of characters to read until newline or end of string.

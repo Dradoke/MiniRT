@@ -15,10 +15,10 @@
 // Applies a function to each character of a string.
 // Creates a new string by applying 'f' to each char of 's' with its index.
 // Returns the new string or NULL if allocation fails.
-char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
+char	*ft_strmapi(char const *s, char (*f)(t_ui32, char))
 {
 	char			*result;
-	unsigned int	i;
+	t_ui32	i;
 
 	if (!s || !f)
 		return (NULL);

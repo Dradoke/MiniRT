@@ -15,10 +15,10 @@
 // Converts radians to degrees.
 // Multiplies radians by 180/pi for the conversion.
 // Uses 3.14159265358979323846 as the value of pi.
-float	ft_radtodeg(float rad)
+t_f32	ft_radtodeg(t_f32 rad)
 {
-	float		pi;
-	float		deg;
+	t_f32		pi;
+	t_f32		deg;
 
 	pi = 3.14159265358979323846f;
 	deg = rad * (180.0f / pi);

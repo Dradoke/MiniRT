@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_striteri.c                                      :+:      :+:    :+:   */
+/*   ft_skipspace.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: MV42                                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,19 +12,8 @@
 
 #include "libft.h"
 
-// Applies a function to each character of a string with its index.
-// Modifies the string 's' in place using function 'f'.
-// Does nothing if 's' or 'f' is NULL.
-void	ft_striteri(char *s, void (*f)(t_ui32, char*))
+void	ft_skipspace(char *str, int *i)
 {
-	t_ui32	i;
-
-	if (!s || !f)
-		return ;
-	i = 0;
-	while (s[i])
-	{
-		f(i, &s[i]);
-		i++;
-	}
+	while (ft_isspace(str[*i]))
+		(*i)++;
 }

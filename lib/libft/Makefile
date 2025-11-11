@@ -51,6 +51,8 @@ CUSTOM			=	$(addprefix custom/, \
 					ft_radtodeg.c \
 					ft_rand_str.c \
 					ft_realloc.c \
+					ft_skipspace.c \
+					ft_split_charset.c \
 					ft_strcmp.c \
 					ft_strcpy.c \
 					ft_strjoin_free.c \

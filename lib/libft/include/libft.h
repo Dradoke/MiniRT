@@ -16,8 +16,37 @@
 # include <unistd.h>
 # include <fcntl.h>
 
-//────────────────────────────────────────────────────────────────────────>LIBFT
+//••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••TYPE
+
+// INTEGER	1 byte  | 8  bits
+typedef unsigned char		t_ui8;
+typedef signed char			t_i8;
+// INTEGER	2 bytes | 16 bits
+typedef unsigned short		t_ui16;
+typedef signed short		t_i16;
+// INTEGER	4 bytes | 32 bits
+typedef unsigned int		t_ui32;
+typedef signed int			t_i32;
+// INTEGER	8 bytes | 64 bits
+typedef unsigned long long	t_ui64;
+typedef signed long long	t_i64;
+// FLOAT	4 bytes | 32 bits
+typedef float				t_f32;
+// FLOAT	8 bytes | 64 bits
+typedef double				t_f64;
+
+//•••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••BOOLEAN
+
+typedef t_ui8				t_bool;
+enum e_bool
+{
+	FALSE,
+	TRUE,
+};
+
+//•••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••LIBFT
 /*LibC Functions*/
+
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);
 int		ft_isalnum(int c);
@@ -41,19 +70,23 @@ char	*ft_strnstr(const char *str, const char *find, size_t len);
 int		ft_atoi(const char *str);
 void	*ft_calloc(size_t size);
 char	*ft_strdup(const char *s1);
-// Additionnal Functions
-char	*ft_substr(char const *s, unsigned int start, size_t len);
+
+// Additional Functions
+
+char	*ft_substr(char const *s, t_ui32 start, size_t len);
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_strtrim(char const *s1, char const *set);
 char	**ft_split(char const *s, char c);
 char	*ft_itoa(int n);
-char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
-void	ft_striteri(char *s, void (*f)(unsigned int, char*));
+char	*ft_strmapi(char const *s, char (*f)(t_ui32, char));
+void	ft_striteri(char *s, void (*f)(t_ui32, char*));
 void	ft_putchar_fd(char c, int fd);
 void	ft_putstr_fd(char *s, int fd);
 void	ft_putendl_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
+
 // Bonus Functions
+
 typedef struct s_list
 {
 	struct s_list	*prev;
@@ -70,29 +103,35 @@ void	ft_lstdelone(t_list *lst, void (*del)(void *));
 void	ft_lstclear(t_list **lst, void (*del)(void *));
 void	ft_lstiter(t_list *lst, void (*f)(void *));
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
-//─────────────────────────────────────────────────────────────────────────────<
-//••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
-//────────────────────────────────────────────────────────────────>GET_NEXT_LINE
+
+//•••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••GET_NEXT_LINE
+
 char	*get_next_line(int fd);
-//─────────────────────────────────────────────────────────────────────────────<
-//••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
-//───────────────────────────────────────────────────────────────────>FT_PRINTFD
+
+//••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••FT_PRINTFD
+
 int		ft_printfd(int fd, const char *format, ...);
-//─────────────────────────────────────────────────────────────────────────────<
-//••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
-//───────────────────────────────────────────────────────────────────────>CUSTOM
-int		ft_isspace(char c);
+
+//••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••CUSTOM
+
+int		ft_abs(int x);
+t_f64	ft_atod(const char *str);
+t_f32	ft_atof(const char *str);
 int		ft_atoi_base(char *str, char *base);
 long	ft_atol(const char *s);
-float	ft_degtorad(float deg);
-float	ft_radtodeg(float rad);
-int		ft_abs(int x);
+t_f32	ft_degtorad(t_f32 deg);
+int		ft_isspace(char c);
+int		ft_isspace_nl(char c);
+t_f32	ft_radtodeg(t_f32 rad);
 char	*ft_rand_str(size_t len);
 void	*ft_realloc(void *original, size_t size);
+void	ft_skipspace(char *str, int *i);
+char	**ft_split_charset(const char *s, const char *charset);
 int		ft_strcmp(const char *s1, const char *s2);
 char	*ft_strcpy(char *dest, char *src);
 char	*ft_strjoin_free(char *s1, char *s2);
 void	ft_vfree(int count, ...);
-//─────────────────────────────────────────────────────────────────────────────<
+
+//••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
 
 #endif

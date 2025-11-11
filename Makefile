@@ -21,7 +21,8 @@ SRC				=	$(addprefix src/, \
 					$(UTILS) \
 					)
 
-UTILS			=	$(addprefix utils/, \
+# UTILS			=	$(addprefix utils/, \
+					color.c \
 					minirt_utils.c \
 					)
 
