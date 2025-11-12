@@ -7,22 +7,16 @@
 /// @return t_bool
 /// @retval 1 / TRUE	- If successful
 /// @retval 0 / FALSE	- If error
-t_bool	color_parser(char *str, t_rgba *color)
+t_bool	parse_color(char *str, t_rgba *color)
 {
-	t_ui8	*components[3];
 	int		i;
 
-	components[0] = &color->r;
-	components[1] = &color->g;
-	components[2] = &color->b;
 	i = 0;
 	while (i < 3)
 	{
 		if (!str)
 			return (FALSE);
-		*components[i] = (t_ui8)ft_atoi(str);
-		if (*components[i] > 255)
-			return (ft_putstr_fd(FTERR_COLOR_RANGE, 2), FALSE);
+		color->rgba[i] = (t_ui8)ft_atoi(str);
 		str = ft_strchr(str, ',');
 		if (!str && i < 2)
 			return (FALSE);
@@ -30,7 +24,7 @@ t_bool	color_parser(char *str, t_rgba *color)
 			str++;
 		i++;
 	}
-	color->a = 1.0f;
+	color->a = 1.0;
 	return (TRUE);
 }
 
@@ -41,7 +35,50 @@ t_bool	color_parser(char *str, t_rgba *color)
 /// @return t_bool
 /// @retval 1 / TRUE	- If successful
 /// @retval 0 / FALSE	- If error
-t_bool vec3_parser(char *str, t_vec3 *vec3)
+t_bool	parse_vec3(char *str, t_vec3 *vec3)
 {
+	int	i;
 
+	i = 0;
+	while (i < 3)
+	{
+		if (!str)
+			return (FALSE);
+		vec3->v[i] = ft_atof(str);
+		str = ft_strchr(str, ',');
+		if (!str && i < 2)
+			return (FALSE);
+		if (str)
+			str++;
+		i++;
+	}
+	return (TRUE);
+}
+
+/// @brief 
+/// @param str 
+/// @param vec3 
+/// @return t_bool
+/// @retval 1 / TRUE	- If successful
+/// @retval 0 / FALSE	- If error
+t_bool	parse_normal_vec3(char *str, t_vec3 *vec3)
+{
+	int	i;
+
+	i = 0;
+	while (i < 3)
+	{
+		if (!str)
+			return (FALSE);
+		vec3->v[i] = ft_atof(str);
+		if (vec3->v[i] < -1.0 || vec3->v[i] > 1.0)
+			return (FALSE);
+		str = ft_strchr(str, ',');
+		if (!str && i < 2)
+			return (FALSE);
+		if (str)
+			str++;
+		i++;
+	}
+	return (TRUE);
 }

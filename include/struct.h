@@ -14,9 +14,10 @@ typedef struct s_data
 
 typedef struct s_scene
 {
-	t_cam	cam;
-	t_light	*light;
-	t_mesh	*mesh;
+	t_cam			cam;
+	t_ambient_light	ambient_light;
+	t_point_light	*light;
+	t_mesh			*mesh;
 }	t_scene;
 
 //••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••• ENUM
@@ -35,11 +36,15 @@ typedef enum e_type
 
 //•••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••• MLX42
 
-typedef struct s_vec3
+typedef union u_vec3
 {
-	t_f64	x;
-	t_f64	y;
-	t_f64	z;
+	struct
+	{
+		t_f32	x;
+		t_f32	y;
+		t_f32	z;
+	};
+	t_f32	v[3];
 }	t_vec3;
 
 typedef struct s_ray
@@ -50,7 +55,7 @@ typedef struct s_ray
 
 typedef struct s_mat4
 {
-	t_f64	m[4][4];
+	t_f32	m[4][4];
 }	t_mat4;
 
 //•••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••• LIST NODE
@@ -80,18 +85,6 @@ typedef struct s_cam
 }	t_cam;
 
 //•••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••• LIGHT
-
-typedef struct s_light
-{
-	t_type	type;
-	t_mat4	transform;
-	t_mat4	inv_transform;
-	union
-	{
-		t_ambient_light		ambient_light;
-		t_point_light		point_light;
-	}	u_data;
-}	t_light;
 
 typedef struct s_ambient_light
 {
@@ -140,8 +133,8 @@ typedef struct s_cylinder
 {
 	t_vec3			location;
 	t_vec3			rotation;
-	t_f64			diameter;
-	t_f64			height;
+	t_f32			diameter;
+	t_f32			height;
 	t_ui32			color;
 }	t_cylinder;
 
@@ -153,14 +146,6 @@ typedef struct s_triangle
 }	t_triangle;
 
 //•••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••• COLOR
-
-enum	e_rgb
-{
-	R,
-	G,
-	B,
-	A,
-};
 
 typedef union u_rgba
 {

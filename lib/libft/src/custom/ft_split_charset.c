@@ -49,7 +49,7 @@ static void	get_counts(const char *s, const char *charset,
 }
 
 static void	process_char(const char **s_ptr, char **str_buf_ptr,
-	t_bool *in_word, const char *charset)
+	t_bool *in_word)
 {
 	if (!*in_word)
 	{
@@ -72,7 +72,7 @@ static void	populate_split(char **result, char *strings_buffer,
 	{
 		if (!is_in_charset(*s, charset))
 			process_char((const char **)&result[i++], &strings_buffer,
-				&in_word, charset);
+				&in_word);
 		else
 		{
 			if (in_word)
@@ -87,15 +87,14 @@ static void	populate_split(char **result, char *strings_buffer,
 		*strings_buffer = '\0';
 }
 
-/**
- * @brief Splits a string by a set of characters, allocating a single
- * contiguous block of memory. The entire result can be freed with a single
- * call to free() on the returned pointer.
- * 
- * @param s The string to split.
- * @param charset A string containing all delimiter characters.
- * @return A null-terminated array of strings, or NULL if allocation fails.
- */
+/// @brief Splits a string by a set of characters, allocating a single
+/// contiguous block of memory. The entire result can be freed with a single
+/// call to free() on the returned pointer.
+/// @param s The string to split.
+/// @param charset A string containing all delimiter characters.
+/// @return char **
+/// @retval Success: A null-terminated array of strings
+/// @retval Fail: NULL if allocation fails.
 char	**ft_split_charset(const char *s, const char *charset)
 {
 	char	**result;

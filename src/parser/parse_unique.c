@@ -25,8 +25,9 @@ static t_bool	parse_camera(t_data *data, char **token)
 	if (!node)
 		return (FALSE);
 	node->type = C;
-	vec3_parser(token[1], &node->u_data.cam.location);
-	vec3_parser(token[2], &node->u_data.cam.rotation);
+	if (!vec3_parser(token[1], &node->u_data.cam.location)
+	|| !normal_vec3_parser(token[2], &node->u_data.cam.rotation)
+	|| !aov_parser(token[3], &node->u_data.cam.aov))
 	node->u_data.cam.aov = ft_atof(token[3]);
 }
 

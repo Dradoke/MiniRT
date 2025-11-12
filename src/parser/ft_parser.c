@@ -46,7 +46,11 @@ static t_bool	parse_line(t_data *data, char *line)
 	return (free(token), result);
 }
 
-
+/// @brief Checks if the global list is valid, only one A and one C at most
+/// @param list The list of objects used in parsing
+/// @return t_bool
+/// @retval 1 / TRUE	- If successful
+/// @retval 0 / FALSE	- If error
 static t_bool	is_valid_list(t_list *list)
 {
 	char	ambient_count;
