@@ -11,51 +11,7 @@
 // 		dest.z - origine.z});
 // }
 
-t_vec3	get_dir(t_vec3 origine, t_vec3 dest)
-{
-	t_vec3	vector = (t_vec3){dest.x - origine.x, dest.y - origine.y,
-		dest.z - origine.z};
-	float	norme = sqrtf((powf(vector.x, 2) + powf(vector.y, 2) + powf(vector.z, 2)));
-	return ((t_vec3){vector.x / norme, vector.y / norme, vector.z / norme});
-}
 
-float	get_scalaire(t_vec3 vec1, t_vec3 vec2)
-{
-	float scalaire = vec1.x * vec2.x + vec1.y * vec2.y + vec1.z * vec2.z;
-
-	if (scalaire <= 0.0)
-		return (0.0);
-	else
-		return (scalaire);
-}
-
-
-int main(void)
-{
-	t_light	*lights = ft_calloc(sizeof(t_light) * 2);
-
-	lights[0].light_type = DIR_LIGHT;
-	lights[1].light_type = POINT_LIGHT;
-
-	float	amb_val[3] = {2.0, 1.8, 1.5};
-	float	point_light_val[3] = {800.0, 700.0, 500.0};
-	t_ambiant_light *ambiant_light = &lights[0].data.ambiant_light;
-	(*ambiant_light).color.r = amb_val[0];
-	(*ambiant_light).color.g = amb_val[1];
-	(*ambiant_light).color.b = amb_val[2];
-	(*ambiant_light).brightness = 0.2;
-
-	t_point_light	*point_light = &lights[1].data.point_light;
-	(*point_light).color.r = point_light_val[0];
-	(*point_light).color.g = point_light_val[1];
-	(*point_light).color.b = point_light_val[2];
-	(*point_light).brightness = 0.6;
-	(*point_light).pos.x = -40.0;
-	(*point_light).pos.y = 50.0;
-	(*point_light).pos.z = 0.0;
-
-	printf("Total light wheight: %f\n", ft_scene_light_wheight(lights));
-}
 
 
 // int	main(void)
@@ -88,7 +44,7 @@ int main(void)
 // 	// t_vec3	light_a = {-40.0, 50.0, 0.0};
 // 	// t_vec3	dir_light_a = get_dir(base_point, light_a);
 // 	seed = ft_calloc(sizeof(seed));
-// 	ft_init_random_seed(seed);
+	// ft_init_random_seed(seed);
 // 	// printf("Ambiant Light:\nx: %f\ny : %f\nz : %f\n", ((t_ambiant_light *)lights->content)->color.r, ((t_ambiant_light *)lights->content)->color.g, ((t_ambiant_light *)lights->content)->color.b);
 // 	lights = lights->next;
 // 	// printf("\nLight:\nx: %f\ny : %f\nz : %f\n", ((t_light *)lights->content)->color.r, ((t_light *)lights->content)->color.g, ((t_light *)lights->content)->color.b);

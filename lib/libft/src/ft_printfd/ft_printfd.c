@@ -29,11 +29,11 @@ int	ft_formats(int fd, va_list args, const char format)
 	else if (format == 'd' || format == 'i')
 		len += ft_pn_b(fd, va_arg(args, int), "0123456789");
 	else if (format == 'u')
-		len += ft_pn_b(fd, va_arg(args, unsigned int), "0123456789");
+		len += ft_pn_b(fd, va_arg(args, t_ui32), "0123456789");
 	else if (format == 'x')
-		len += ft_pn_b(fd, va_arg(args, unsigned int), "0123456789abcdef");
+		len += ft_pn_b(fd, va_arg(args, t_ui32), "0123456789abcdef");
 	else if (format == 'X')
-		len += ft_pn_b(fd, va_arg(args, unsigned int), "0123456789ABCDEF");
+		len += ft_pn_b(fd, va_arg(args, t_ui32), "0123456789ABCDEF");
 	else if (format == '%')
 		len += ft_printpct(fd);
 	return (len);

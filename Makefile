@@ -18,12 +18,12 @@ SRC_DIR			=	src/
 # Source File
 SRC				=	$(addprefix src/, \
 					minirt.c \
-					restir/restir_utils.c \
-					restir/light_sampling.c \
 					$(UTILS) \
 					)
 
-UTILS			=	$(addprefix utils/, \
+# UTILS			=	$(addprefix utils/, \
+					color.c \
+					minirt_utils.c \
 					)
 
 #•••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
@@ -35,19 +35,19 @@ OBJ				=	$(SRC:$(SRC_DIR)%.c=$(OBJ_DIR)%.o)
 IFLAG			=	$(addprefix -I, \
 					$(INC_DIR) \
 					$(LIBFT_DIR)/include \
+					$(MLX42_DIR)/include/MLX42 \
 					)
-# 					$(MLX42_DIR)/include \
 
 #•••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
 
 # Library Path & File
 LIBFT_DIR		=	$(LIB_DIR)libft/
 LIBFT			=	$(LIBFT_DIR)libft.a
-# MLX42_DIR		=	$(LIB_DIR)MLX42/
-# MLX42			=	$(MLX42_DIR)/build/libmlx42.a
+MLX42_DIR		=	$(LIB_DIR)MLX42/
+MLX42			=	$(MLX42_DIR)/build/libmlx42.a
 
 # Library Dependencies for MLX42
-MLX_DEPS		=	-ldl -lglfw -pthread
+MLX_DEPS		=	-ldl -lglfw -pthread -lm
 
 #•••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
 
@@ -63,10 +63,8 @@ $(MLX42):
 	@cmake $(MLX42_DIR) -B $(MLX42_DIR)/build && make -C $(MLX42_DIR)/build -j4
 
 # Main Target
-# $(MLX42)
-$(NAME): $(OBJ) $(LIBFT)
-	@$(CC) $(CFLAG) $(OBJ) $(LIBFT) -o $(NAME) -lm
-# 	$(MLX42) $(MLX_DEPS)
+$(NAME): $(OBJ) $(LIBFT) $(MLX42)
+	@$(CC) $(CFLAG) $(OBJ) $(LIBFT) $(MLX42) $(MLX_DEPS) -o $(NAME)
 	@echo "Welcome $@ ! 🤩🤙"
 
 # Object File Compilation Rule

@@ -15,23 +15,15 @@ void	update_pool(t_pool pool, t_sample new_s, float new_w, unsigned int seed)
 		pool.sample = new_s;
 }
 
-
-/// @brief Calculate the RGB Flux of an Area Light (Lantern, Candle, Floor Lamp, etc)
-/// @param lights 
-// void	ft_flux_rgb_al(t_list lights)
-// {
-
-// }
-
 /// @brief Calculate the RGB Flux of a Point Light
 /// @param lights 
-t_rgb	ft_flux_rgb_pl(t_light lights)
+t_rgba	ft_flux_rgb_pl(t_point_light lights)
 {
 	const float k = 10.0;
-	t_rgb	e;
-	t_rgb	light_rgb;
+	t_rgba	e;
+	t_rgba	light_rgb;
 	
-	light_rgb = lights.data.point_light.color;
+	light_rgb = lights.color;
 	e.r = light_rgb.r * k;
 	e.g = light_rgb.g * k;
 	e.b = light_rgb.b * k;
@@ -40,20 +32,20 @@ t_rgb	ft_flux_rgb_pl(t_light lights)
 
 /// @brief Calculate the RGB Flux of a Directional Light (Sun, Ambiant Light)
 /// @param lights 
-t_rgb	ft_flux_rgb_dl(t_light lights)
+t_rgba	ft_flux_rgb_dl(t_ambiant_light lights)
 {
 	const float k = powf(10.0, 5);
-	t_rgb	e;
-	t_rgb	light_rgb;
+	t_rgba	e;
+	t_rgba	light_rgb;
 
-	light_rgb = lights.data.ambiant_light.color;
+	light_rgb = lights.color;
 	e.r = light_rgb.r * k;
 	e.g = light_rgb.g * k;
 	e.b = light_rgb.b * k;
 	return (e);
 }
 
-float	ft_luminance(t_rgb light_rgb)
+float	ft_luminance(t_rgba light_rgb)
 {
 	t_rgb	human_eye_factor;
 	float	luminance;
@@ -68,41 +60,43 @@ float	ft_luminance(t_rgb light_rgb)
 	return (luminance);
 }
 
-t_rgb	ft_init_rgb(void)
+t_rgba	ft_init_rgb(void)
 {
-	t_rgb	rgb;
+	t_rgba	rgba;
 
-	rgb.r = 0;
-	rgb.g = 0;
-	rgb.b = 0;
-	return (rgb);
+	rgba.r = 0;
+	rgba.g = 0;
+	rgba.b = 0;
+	rgba.b = 1;
+	return (rgba);
 }
 
 /// @brief Calculate the total Wheight of the scene lights
-/// @param lights array of the scene lights
+/// @param lights scene lights array
 /// @return the total lighting wheight as a float
-float	ft_scene_light_wheight(t_light *lights)
+float	ft_scene_light_wheight(t_point_light *lights)
 {
 	float	total_wheight;
-	t_rgb	light_energy;
+	t_rgba	light_energy;
 	int		i;
 
 	i = 0;
 	total_wheight = 0.0;
-	while (lights[i].light_type)
+	while (lights[i].brightness)
 	{
 		light_energy = ft_init_rgb();
-		if (lights[i].light_type == POINT_LIGHT)
-		{
-			light_energy = ft_flux_rgb_pl(lights[i]);
-		}
-		else if (lights[i].light_type == DIR_LIGHT)
-		{
-			light_energy = ft_flux_rgb_dl(lights[i]);
-		}
-		lights[i].light_energy = ft_luminance(light_energy);
-		total_wheight += lights[i].light_energy;
+		light_energy = ft_flux_rgb_pl(lights[i]);
+		lights[i].brightness = ft_luminance(light_energy);
+		total_wheight += lights[i].brightness;
 		i++;
 	}
 	return (total_wheight);
+}
+
+float	ft_wheight_target(float total_wheight)
+{
+	unsigned int	seed;
+
+	ft_init_random_seed(&seed);
+	return (ft_random_float(RANDF_MIN, RANDF_MAX, seed) * total_wheight);
 }

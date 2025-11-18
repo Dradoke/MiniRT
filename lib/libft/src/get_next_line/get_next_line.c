@@ -12,6 +12,29 @@
 
 #include "get_next_line.h"
 
+// Reallocates a string to a new size.
+// Copies content from 's1' to a new string of 'size' bytes.
+// Returns a pointer to the new string or NULL if allocation fails.
+static char	*ft_realloc(char *s1, size_t size)
+{
+	char	*s2;
+	size_t	i;
+
+	i = 0;
+	if (!s1)
+		return (ft_calloc_char(size));
+	s2 = ft_calloc_char(size);
+	if (!s2)
+		return (free(s1), NULL);
+	while (s1[i] && i < size - 1)
+	{
+		s2[i] = s1[i];
+		i++;
+	}
+	free(s1);
+	return (s2);
+}
+
 // Builds a line from a buffer until newline or EOF.
 // Reads from fd, reallocates memory as needed, copies characters.
 // Returns the complete line or NULL on error/EOF.

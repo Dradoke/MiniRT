@@ -6,12 +6,22 @@
  * @brief Specific structures for restir
  */
 
-typedef enum	e_light_type
-{
-	NONE,
-	POINT_LIGHT,
-	DIR_LIGHT
-}				t_light_type;
+/// @def Maximum rebounds number
+# ifndef MAX_DEPTH
+#  define MAX_DEPTH 5
+# endif
+
+/// @def Sample Per Pixel
+# ifndef SPP
+#  define SPP 16
+# endif
+
+# define RANDF_MIN 0.0
+# define RANDF_MAX 1.0
+
+# define PI 3.14159265f
+# define LIGHT_PDF 1/(4*PI)
+# define EPSILON 0.0001f
 
 typedef struct	s_rgb
 {
@@ -20,41 +30,12 @@ typedef struct	s_rgb
 	float	b;
 }				t_rgb;
 
-/// @brief vec3 for Position(p), Direction(x), Normal(n), specular reflexion, light radiance
-typedef struct	s_vec3
-{
-	float	x;
-	float	y;
-	float	z;
-}				t_vec3;
-
 /// @brief Ambiant light element, extended as A in .rt file
 typedef struct	s_ambiant_light
 {
 	float			brightness;
-	t_rgb			color;
+	t_rgba			color;
 }				t_ambiant_light;
-
-/// @brief Point Light element, extended as L in .rt file
-typedef struct	s_point_light
-{
-	t_vec3	pos;
-	float	brightness;
-	t_rgb	color;
-}				t_point_light;
-
-typedef	struct	s_light
-{
-	t_light_type	light_type;
-	float			light_energy;
-	union
-	{
-		t_ambiant_light	ambiant_light;
-		t_point_light	point_light;
-	}	data;
-	
-}				t_light;
-
 
 /// @brief This is the structure for (the “champion” sample).
 typedef struct	s_sample
@@ -98,23 +79,38 @@ typedef struct	s_material
 /// @param p Postion
 /// @param n Normal
 /// @param material surface proprerties reference
-/// @param omega_o direction to where th rayon come from
+/// @param omega_o direction to where the rayon come from
 typedef struct	s_hit_record
 {
 	t_vec3		p;
 	t_vec3		n;
-	t_material	*material;
+	t_bool		has_touched;
 	t_vec3		omega_o;
+	t_rgba		color;
 }				t_hit_record;
+
+typedef struct	s_path_tracing
+{
+	t_hit_record	hit;
+	t_vec3			d_new;
+	t_rgba			direct_light;
+	t_rgba			indirect_light;
+	t_ray			next_ray;
+	t_rgba			entrant_light;
+	t_rgba			out_light;
+
+}				t_path_tracing;
 
 
 float	get_scalaire(t_vec3 vec1, t_vec3 vec2);
+t_vec3	ft_normalize(t_vec3 vector);
+t_vec3	ft_cross(t_vec3 a, t_vec3 b);
 t_vec3	get_dir(t_vec3 origine, t_vec3 dest);
 void	ft_init_random_seed(unsigned int *seed);
 float	ft_random_float(float min, float max, unsigned int *seed);
-float	ft_scene_light_wheight(t_light *lights);
 t_rgb	ft_init_rgb(void);
-float	ft_luminance(t_rgb light_rgb);
-t_rgb	ft_flux_rgb_dl(t_light lights);
-t_rgb	ft_flux_rgb_pl(t_light lights);
+t_vec3	ft_vec3_add(t_vec3 v1, t_vec3 v2);
+t_vec3	ft_vec3_scale(t_vec3 v, float s);
+t_rgba	ft_rgba_mult(t_rgba c1, t_rgba c2);
+t_rgba	ft_rgba_add(t_rgba c1, t_rgba c2);
 #endif

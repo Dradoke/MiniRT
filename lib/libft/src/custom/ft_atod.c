@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_striteri.c                                      :+:      :+:    :+:   */
+/*   ft_atod.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: MV42                                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,19 +12,31 @@
 
 #include "libft.h"
 
-// Applies a function to each character of a string with its index.
-// Modifies the string 's' in place using function 'f'.
-// Does nothing if 's' or 'f' is NULL.
-void	ft_striteri(char *s, void (*f)(t_ui32, char*))
+// Converts a string to a t_f64.
+// Skips whitespace, handles '+'/'-' signs, then parses digits.
+// Returns the converted t_f64 value.
+t_f64	ft_atod(const char *str)
 {
-	t_ui32	i;
+	t_f64	result;
+	t_f64	sign;
+	t_f64	divisor;
 
-	if (!s || !f)
-		return ;
-	i = 0;
-	while (s[i])
+	result = 0;
+	sign = 1;
+	divisor = 1;
+	while (*str == ' ' || (*str >= 9 && *str <= 13))
+		str++;
+	if (*str == '-' || *str == '+')
+		if (*(str++) == '-')
+			sign = -1;
+	while (*str >= '0' && *str <= '9')
+		result = result * 10 + (*(str++) - '0');
+	if (*str == '.')
+		str++;
+	while (*str >= '0' && *str <= '9')
 	{
-		f(i, &s[i]);
-		i++;
+		result = result * 10 + (*(str++) - '0');
+		divisor *= 10;
 	}
+	return ((result / divisor) * sign);
 }

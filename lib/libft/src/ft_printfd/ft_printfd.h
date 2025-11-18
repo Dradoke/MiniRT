@@ -13,6 +13,8 @@
 #ifndef FT_PRINTFD_H
 # define FT_PRINTFD_H
 
+# include "libft.h"
+
 # include <stdarg.h>
 # include <unistd.h>
 # include <stdlib.h>

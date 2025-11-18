@@ -29,11 +29,10 @@ LIBFT_DIR		=	$(LIB_DIR)libft/
 # Source Files
 SRC				=	$(addprefix src/, \
 					$(CUSTOM) \
-					$(PRINTFD) \
 					$(GNL) \
 					$(LIBFT) \
+					$(PRINTFD) \
 					)
-
 # Object Files
 OBJ				=	$(patsubst %.c,$(OBJ_DIR)%.o,$(SRC))
 
@@ -51,6 +50,8 @@ CUSTOM			=	$(addprefix custom/, \
 					ft_radtodeg.c \
 					ft_rand_str.c \
 					ft_realloc.c \
+					ft_skipspace.c \
+					ft_split_charset.c \
 					ft_strcmp.c \
 					ft_strcpy.c \
 					ft_strjoin_free.c \
