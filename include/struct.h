@@ -92,6 +92,7 @@ typedef struct s_sphere
 	t_vec3	location;
 	t_f32	diameter;
 	t_rgba	color;
+	t_f32	radius;
 }	t_sphere;
 
 typedef struct s_plane

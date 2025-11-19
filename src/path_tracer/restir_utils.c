@@ -101,22 +101,17 @@ t_vec3	ft_cross(t_vec3 a, t_vec3 b)
 /// @return vector "v" * scalar "s"
 t_vec3	ft_vec3_scale(t_vec3 v, float s)
 {
-	t_vec3	result;
-
-	result.x = v.x * s;
-	result.y = v.y * s;
-	result.z = v.z * s;
-	return (result);
+	return (t_vec3){v.x * s, v.y * s, v.z * s};
 }
 
 t_vec3	ft_vec3_add(t_vec3 v1, t_vec3 v2)
 {
-	t_vec3	result;
+	return (t_vec3){v1.x + v2.x, v1.y + v2.y, v1.z + v2.z};
+}
 
-	result.x = v1.x + v2.x;
-	result.y = v1.y + v2.y;
-	result.z = v1.z + v2.z;
-	return (result);
+t_vec3	ft_vec3_sub(t_vec3 v1, t_vec3 v2)
+{
+	return (t_vec3){v1.x - v2.x, v1.y - v2.y, v1.z - v2.z};
 }
 
 t_rgba	ft_rgba_mult(t_rgba c1, t_rgba c2)
@@ -130,6 +125,31 @@ t_rgba	ft_rgba_mult(t_rgba c1, t_rgba c2)
 	return (result);
 }
 
+t_vec3 ft_vec3_neg(t_vec3 v)
+{
+	return (t_vec3){-v.x, -v.y, -v.z};
+}
+
+double ft_vec3_dot(t_vec3 v1, t_vec3 v2)
+{
+	return v1.x*v2.x + v1.y*v2.y + v1.z*v2.z;
+}
+
+double ft_vec3_len2(t_vec3 v)
+{
+	return ft_vec3_dot(v, v);
+}
+
+double ft_vec3_len(t_vec3 v)
+{
+	return sqrt(v_len2(v));
+}
+
+t_vec3 ft_ray_at(t_ray r, double t)
+{
+	return ft_vec3_add(r.origin, ft_vec3_scale(r.dir, t));
+}
+
 t_rgba	ft_rgba_add(t_rgba c1, t_rgba c2)
 {
 	t_rgba	result;
@@ -139,4 +159,192 @@ t_rgba	ft_rgba_add(t_rgba c1, t_rgba c2)
 	result.b = c1.b + c2.b;
 	result.a = c1.a + c2.a;
 	return (result);
+}
+
+t_vec3 mat4_mul_vec3(t_mat4 m, t_vec3 v, double w)
+{
+	t_vec3 out;
+
+	out.x = m.m[0][0] * v.x + m.m[0][1] * v.y + m.m[0][2] * v.z + m.m[0][3] * w;
+	out.y = m.m[1][0] * v.x + m.m[1][1] * v.y + m.m[1][2] * v.z + m.m[1][3] * w;
+	out.z = m.m[2][0] * v.x + m.m[2][1] * v.y + m.m[2][2] * v.z + m.m[2][3] * w;
+
+	return out;
+}
+
+t_mat4 mat4_transpose(t_mat4 m)
+{
+	t_mat4 out;
+
+	for (int i = 0; i < 4; i++)
+		for (int j = 0; j < 4; j++)
+			out.m[i][j] = m.m[j][i];
+
+	return out;
+}
+
+t_ray transform_ray_world_to_local(t_ray r, t_mat4 inv)
+{
+	t_ray out;
+
+	out.origin = mat4_mul_vec3(inv, r.origin, 1.0);
+	out.dir = mat4_mul_vec3(inv, r.dir, 0.0);
+	out.dir = ft_normalize(out.dir);
+
+	return out;
+}
+
+void transform_hit_local_to_world(t_hit_record *hit, t_mat4 transform, t_mat4 inv_transform)
+{
+	hit->p = mat4_mul_vec3(transform, hit->p, 1.0);
+	t_mat4 invT = mat4_transpose(inv_transform);
+	hit->n = mat4_mul_vec3(invT, hit->n, 0.0);
+	hit->n = ft_normalize(hit->n);
+}
+
+t_bool	hit_sphere(t_hit_record *hit, t_sphere sphere, t_ray ray)
+{
+	t_hit_sp_data data;
+
+	data.oc = ft_vec3_sub(ray.origin, sphere.location);
+	data.a = 1.0;
+	data.b = 2 * ft_vec3_dot(data.oc, ray.dir);
+	data.c = ft_vec3_dot(data.oc, data.oc) - sphere.radius * sphere.radius;
+	data.disc = (data.b * data.b) - (4 * data.a * data.c);
+	if (data.disc < 0)
+		return (FALSE);
+	data.sqrt_disc = sqrt(data.disc);
+	data.t1 = (-data.b - data.sqrt_disc) / (2 * data.a);
+	data.t2 = (-data.b + data.sqrt_disc) / (2 * data.a);
+	if (data.t1 > EPS)
+		hit->t = data.t1;
+	else if (data.t2 > EPS)
+		hit->t = data.t2;
+	else
+		return (FALSE);
+	hit->p = ft_ray_at(ray, hit->t);
+	hit->n = ft_normalize(ft_vec3_sub(hit->p, sphere.location));
+	return (TRUE);
+}
+
+t_bool	hit_plane(t_hit_record *hit, t_plane plane, t_ray ray)
+{
+	double	denom;
+	double	t;
+
+	denom = ft_vec3_dot(plane.rotation, ray.dir);
+	if (fabs(denom) < EPS)
+		return (FALSE);
+	t = ft_vec3_dot(ft_vec3_sub(plane.location, ray.origin), plane.rotation)
+		/ denom;
+	if (t < EPS)
+		return (FALSE);
+	hit->t = t;
+	hit->p = ft_ray_at(ray, hit->t);
+	if (ft_vec3_dot(ray.dir, plane.rotation) < 0)
+		hit->n = plane.rotation;
+	else
+		hit->n = ft_vec3_neg(plane.rotation);
+	return (TRUE);
+}
+
+t_bool	hit_cylinder(t_hit_record *hit, t_mesh obj, t_ray ray)
+{
+	t_cylinder	cyl;
+	t_vec3	oc;
+	double	dx;
+	double	dy;
+	double	dz;
+	double	ox;
+	double	oy;
+	double	oz;
+	double	r;
+	double	half;
+	double	a;
+	double	b;
+	double	c;
+	double	disc;
+	double	sqrt_disc;
+	double	tcand[2];
+	int	i;
+	double	y;
+	double	best_t;
+	double	y_cap;
+	double	t_cap;
+	t_vec3	p;
+
+	cyl = obj.u_data.cylinder;
+	oc = ft_vec3_sub(ray.origin, cyl.location);
+	dx = ray.dir.x;
+	dy = ray.dir.y;
+	dz = ray.dir.z;
+	ox = oc.x;
+	oy = oc.y;
+	oz = oc.z;
+	r = cyl.diameter * 0.5;
+	half = cyl.height * 0.5;
+	a = (dx * dx) + (dz * dz);
+	b = 2 * ((ox * dx) + (oz * dz));
+	c = (ox * ox) + (oz * oz) - (r * r);
+	best_t = INFINITY;
+	if (fabsf(a) >= EPS)
+	{
+		disc = (b * b) - (4 * a * c);
+		if (disc >= 0.0)
+		{
+			sqrt_disc = sqrt(disc);
+			tcand[0] = (-b - sqrt_disc) / (2 * a);
+			tcand[1] = (-b + sqrt_disc) / (2 * a);
+			i = 0;
+			while (i <= 1)
+			{
+				if (tcand[i] > EPS)
+				{
+					y = oy + tcand[i] * dy;
+					if ((y > (-half - EPS) && y < (half + EPS)) && tcand[i] < best_t)
+					{
+						best_t = tcand[i];
+						hit->p = ft_ray_at(ray, tcand[i]);
+						hit->n = ft_vec3_sub(hit->p, cyl.location);
+						hit->n.y = 0;
+					}
+				}
+				i++;
+			}
+		}
+	}
+	if (fabs(dy) > EPS)
+	{
+		i = 0;
+		while (i <= 1)
+		{
+			if (i == 0)
+				y_cap = cyl.location.y + half;
+			else
+				y_cap = cyl.location.y - half;
+			t_cap = (y_cap - ray.origin.y) / dy;
+			if (t_cap > EPS)
+			{
+				p = ft_ray_at(ray, t_cap);
+				if (((pow((p.x - cyl.location.x), 2) + pow((p.z - cyl.location.z), 2)) <= (r * r + EPS)) && t_cap < best_t)
+				{
+					best_t = t_cap;
+					hit->p = p;
+					if (i == 0)
+						hit->n = (t_vec3){0, 1, 0};
+					else
+						hit->n = (t_vec3){0, -1, 0};
+				}
+			}
+			i++;
+		}
+	}
+	if (best_t == INFINITY)
+		return (FALSE);
+	else
+	{
+		hit->t = best_t;
+		hit->n = ft_normalize(hit->n);
+		return (TRUE);
+	}
 }

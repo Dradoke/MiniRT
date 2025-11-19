@@ -22,6 +22,7 @@
 # define PI 3.14159265f
 # define LIGHT_PDF 1/(4*PI)
 # define EPSILON 0.0001f
+# define EPS 1e-6
 
 typedef struct	s_rgb
 {
@@ -80,6 +81,8 @@ typedef struct	s_material
 /// @param n Normal
 /// @param material surface proprerties reference
 /// @param omega_o direction to where the rayon come from
+/// @param color impact point color based on the object's color
+///	@param t distance from the impact point in relation to the origin of the ray
 typedef struct	s_hit_record
 {
 	t_vec3		p;
@@ -87,6 +90,7 @@ typedef struct	s_hit_record
 	t_bool		has_touched;
 	t_vec3		omega_o;
 	t_rgba		color;
+	double		t;
 }				t_hit_record;
 
 typedef struct	s_path_tracing
@@ -101,6 +105,17 @@ typedef struct	s_path_tracing
 
 }				t_path_tracing;
 
+typedef struct s_hit_sp_data
+{
+	t_vec3	oc;
+	double	a;
+	double	b;
+	double	c;
+	double	disc;
+	double	sqrt_disc;
+	double	t1;
+	double	t2;
+}	t_hit_sp_data;
 
 float	get_scalaire(t_vec3 vec1, t_vec3 vec2);
 t_vec3	ft_normalize(t_vec3 vector);
