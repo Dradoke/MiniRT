@@ -2,25 +2,13 @@
 # define STRUCT_H
 # include "minirt.h"
 
-//•••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••• GLOBAL STRUCT
-
-typedef struct s_data
-{
-	mlx_t		*mlx;
-	mlx_image_t	*img;
-	t_scene		scene;
-	t_list		*parse_list;
-}	t_data;
-
-typedef struct s_scene
-{
-	t_cam			cam;
-	t_ambient_light	ambient_light;
-	t_point_light	*light;
-	t_mesh			*mesh;
-}	t_scene;
-
 //••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••• ENUM
+
+enum e_count_type
+{
+	LIGHT,
+	MESH,
+};
 
 typedef enum e_type
 {
@@ -28,11 +16,39 @@ typedef enum e_type
 	A,
 	C,
 	L,
-	sp,
-	pl,
-	cy,
-	tr,
+	SP,
+	PL,
+	CY,
+	TR,
 }	t_type;
+
+typedef enum e_flags
+{
+	RMB,
+	FISHEYE,
+}	t_flags;
+
+typedef enum e_axis
+{
+	X,
+	Y,
+	Z,
+}	t_axis;
+
+//•••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••• COLOR
+
+typedef union u_rgba
+{
+	struct
+	{
+		t_ui8	r;
+		t_ui8	g;
+		t_ui8	b;
+		t_ui8	a;
+	};
+	t_ui8	rgba[4];
+	t_ui32	color;
+}	t_rgba;
 
 //•••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••• MLX42
 
@@ -58,30 +74,13 @@ typedef struct s_mat4
 	t_f32	m[4][4];
 }	t_mat4;
 
-//•••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••• LIST NODE
-
-typedef struct s_node
-{
-	t_type	type;
-	union
-	{
-		t_ambient_light		ambient_light;
-		t_cam				cam;
-		t_point_light		point_light;
-		t_sphere			sphere;
-		t_plane				plane;
-		t_cylinder			cylinder;
-		t_triangle			triangle;
-	}	u_data;
-}	t_node;
-
 //••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••• CAMERA
 
 typedef struct s_cam
 {
 	t_vec3	location;
 	t_vec3	rotation;
-	t_i8	aov;
+	t_ui8	aov;
 }	t_cam;
 
 //•••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••• LIGHT
@@ -101,6 +100,37 @@ typedef struct s_point_light
 
 //••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••• MESH
 
+typedef struct s_sphere
+{
+	t_vec3	location;
+	t_f32	diameter;
+	t_rgba	color;
+}	t_sphere;
+
+typedef struct s_plane
+{
+	t_vec3	location;
+	t_vec3	rotation;
+	t_rgba	color;
+}	t_plane;
+
+typedef struct s_cylinder
+{
+	t_vec3			location;
+	t_vec3			rotation;
+	t_f32			diameter;
+	t_f32			height;
+	t_rgba			color;
+}	t_cylinder;
+
+typedef struct s_triangle
+{
+	t_vec3			vertex1;
+	t_vec3			vertex2;
+	t_vec3			vertex3;
+	t_rgba			color;
+}	t_triangle;
+
 typedef struct s_mesh
 {
 	t_type	type;
@@ -115,50 +145,43 @@ typedef struct s_mesh
 	}	u_data;
 }	t_mesh;
 
-typedef struct s_sphere
-{
-	t_vec3	location;
-	t_f32	diameter;
-	t_ui32	color;
-}	t_sphere;
+//•••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••• LIST NODE
 
-typedef struct s_plane
+typedef struct s_node
 {
-	t_vec3	location;
-	t_vec3	rotation;
-	t_ui32	color;
-}	t_plane;
-
-typedef struct s_cylinder
-{
-	t_vec3			location;
-	t_vec3			rotation;
-	t_f32			diameter;
-	t_f32			height;
-	t_ui32			color;
-}	t_cylinder;
-
-typedef struct s_triangle
-{
-	t_vec3			vertex1;
-	t_vec3			vertex2;
-	t_vec3			vertex3;
-}	t_triangle;
-
-//•••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••• COLOR
-
-typedef union u_rgba
-{
-	struct
+	t_type	type;
+	union
 	{
-		t_ui8	r;
-		t_ui8	g;
-		t_ui8	b;
-		t_ui8	a;
-	};
-	t_ui8	rgba[4];
-	t_ui32	color;
-}	t_rgba;
+		t_ambient_light		ambient_light;
+		t_cam				cam;
+		t_point_light		point_light;
+		t_sphere			sphere;
+		t_plane				plane;
+		t_cylinder			cylinder;
+		t_triangle			triangle;
+	}	u_data;
+}	t_node;
+
+//•••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••• GLOBAL STRUCT
+
+typedef struct s_scene
+{
+	t_ambient_light	ambient_light;
+	t_cam			cam;
+	t_point_light	*light;
+	t_mesh			*mesh;
+	int				obj_count[2];
+}	t_scene;
+
+typedef struct s_data
+{
+	mlx_t		*mlx;
+	mlx_image_t	*img;
+	t_scene		scene;
+	t_list		*parse_list;
+	t_ui8		flags[2];
+	t_f64		last_pos[2];
+}	t_data;
 
 //••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
 

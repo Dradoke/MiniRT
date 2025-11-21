@@ -1,7 +1,7 @@
 #include "minirt.h"
 
 /// @brief Converts str in t_rgba where a is 1.
-/// @param str String with 3 number values between 0 and 255 delimited by
+/// @param str String with 3 number values [0:255] delimited by
 /// ',' only, in the strict order : r,g,b
 /// @param color Address of t_rgba var where converted values will be stored
 /// @return t_bool
@@ -24,11 +24,11 @@ t_bool	parse_color(char *str, t_rgba *color)
 			str++;
 		i++;
 	}
-	color->a = 1.0;
+	color->a = 255;
 	return (TRUE);
 }
 
-/// @brief Converts str in t_vec3
+/// @brief Converts str to t_vec3
 /// @param str String with 3 number values within double type range delimited by
 /// ',' only, in the strict order : x,y,z
 /// @param vec3 Address of t_vec3 var where converted values will be stored
@@ -55,9 +55,11 @@ t_bool	parse_vec3(char *str, t_vec3 *vec3)
 	return (TRUE);
 }
 
-/// @brief 
-/// @param str 
-/// @param vec3 
+/// @brief Converts str to vec3 and checks if between normalized range 
+/// [-1.0:1.0]
+/// @param str String with 3 number values within [-1.0:1.0] range delimited 
+/// by ',' only, in the strict order : x,y,z
+/// @param vec3 Address of t_vec3 var where converted values will be stored
 /// @return t_bool
 /// @retval 1 / TRUE	- If successful
 /// @retval 0 / FALSE	- If error

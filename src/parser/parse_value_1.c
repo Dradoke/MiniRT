@@ -1,8 +1,8 @@
 #include "minirt.h"
 
-/// @brief 
-/// @param str 
-/// @param brightness 
+/// @brief Converts str in t_f32 representing the brightness in range [0.0:1.0]
+/// @param str String with 1 float number [0.0:1.0]
+/// @param brightness Address of t_f32 var where converted values will be stored
 /// @return t_bool
 /// @retval 1 / TRUE	- If successful
 /// @retval 0 / FALSE	- If error
@@ -16,9 +16,9 @@ t_bool	parse_brightness(char *str, t_f32 *brightness)
 	return (TRUE);
 }
 
-/// @brief 
-/// @param str 
-/// @param aov 
+/// @brief Converts str in t_ui8 representing the AOV in range [0:180]
+/// @param str String with 1 integer number [0:180]
+/// @param aov Address of t_ui8 var where converted values will be stored
 /// @return t_bool
 /// @retval 1 / TRUE	- If successful
 /// @retval 0 / FALSE	- If error
@@ -32,9 +32,9 @@ t_bool	parse_aov(char *str, t_ui8 *aov)
 	return (TRUE);
 }
 
-/// @brief 
-/// @param str 
-/// @param size 
+/// @brief Converts str in t_f32 representing a size in range [0.0:max]
+/// @param str String with 1 float number [0.0:max]
+/// @param size Address of t_f32 var where converted values will be stored
 /// @return t_bool
 /// @retval 1 / TRUE	- If successful
 /// @retval 0 / FALSE	- If error

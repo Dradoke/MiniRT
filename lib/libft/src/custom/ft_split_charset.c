@@ -48,15 +48,15 @@ static void	get_counts(const char *s, const char *charset,
 	}
 }
 
-static void	process_char(const char **s_ptr, char **str_buf_ptr,
-	t_bool *in_word)
+static void	process_char(char **result_ptr, const char *s_char,
+	char **str_buf_ptr, t_bool *in_word)
 {
 	if (!*in_word)
 	{
 		*in_word = TRUE;
-		*(char ***)s_ptr = str_buf_ptr;
+		*result_ptr = *str_buf_ptr;
 	}
-	**str_buf_ptr = **s_ptr;
+	**str_buf_ptr = *s_char;
 	(*str_buf_ptr)++;
 }
 
@@ -71,8 +71,11 @@ static void	populate_split(char **result, char *strings_buffer,
 	while (*s)
 	{
 		if (!is_in_charset(*s, charset))
-			process_char((const char **)&result[i++], &strings_buffer,
-				&in_word);
+		{
+			process_char(&result[i], s, &strings_buffer, &in_word);
+			if (!(*s && !is_in_charset(*(s + 1), charset)))
+				i++;
+		}
 		else
 		{
 			if (in_word)

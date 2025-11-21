@@ -15,10 +15,6 @@ static t_bool	filename_is_rt(char *name)
 	return (FALSE);
 }
 
-/// @brief 
-/// @param data 
-/// @param line 
-/// @return 
 static t_bool	parse_object(t_data *data, char **token)
 {
 	if (!ft_strcmp(token[0], "A") || !ft_strcmp(token[0], "C")
@@ -26,14 +22,10 @@ static t_bool	parse_object(t_data *data, char **token)
 		return (parse_unique(data, token));
 	else if (!ft_strcmp(token[0], "sp") || !ft_strcmp(token[0], "pl")
 		|| !ft_strcmp(token[0], "cy") || !ft_strcmp(token[0], "tr"))
-		return (parse_mesh(data, token));
+		return (data->scene.obj_count[MESH]++, parse_mesh(data, token));
 	return (FALSE);
 }
 
-/// @brief 
-/// @param data 
-/// @param line 
-/// @return 
 static t_bool	parse_line(t_data *data, char *line)
 {
 	char	**token;
@@ -64,10 +56,10 @@ static t_bool	is_valid_list(t_list *list)
 			ambient_count--;
 		if (list->content && ((t_node *)list->content)->type == C)
 			cam_count--;
-		if (!ambient_count || !cam_count)
-			return (FALSE);
 		list = list->next;
 	}
+	if (ambient_count || cam_count)
+		return (FALSE);
 	return (TRUE);
 }
 
@@ -92,10 +84,10 @@ t_bool	ft_parser(t_data *data, char *filename)
 			valid_flag = parse_line(data, line);
 		free(line);
 		if (!valid_flag)
-			return (ft_clean_all(data), FALSE);
+			return (ft_error(data, EXIT_FAILURE, FTERR_PARSE), FALSE);
 		line = get_next_line(fd);
 	}
-	if(!is_valid_list(data->parse_list));
-		return (ft_clean_all(data), FALSE);
+	if (!is_valid_list(data->parse_list) || !ft_lst_to_arr(data))
+		return (ft_error(data, EXIT_FAILURE, FTERR_PARSE), FALSE);
 	return (TRUE);
 }

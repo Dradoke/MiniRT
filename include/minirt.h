@@ -5,6 +5,12 @@
 # define WIDTH 256
 # define HEIGHT 256
 
+# define CAM_SENSI 1.0
+# define MOVE_SPEED 0.5
+# define ROLL_SPEED 0.05
+
+# define RESIZE_DEBOUNCE_TIME 0.15
+
 //••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
 
 # include <unistd.h>		// read, write, close
@@ -18,9 +24,10 @@
 # include "MLX42/MLX42.h"	// MinilibX
 # include "libft.h"			// LibFT
 
-# include "prototype.h"
-# include "struct.h"
+# include "colors.h"
 # include "fterr.h"
+# include "struct.h"
+# include "prototype.h"
 
 //••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
 #endif

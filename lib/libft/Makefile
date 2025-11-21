@@ -44,6 +44,8 @@ LFLAG			=	$(addprefix -L, )
 # Source Files List
 CUSTOM			=	$(addprefix custom/, \
 					ft_abs.c \
+					ft_atod.c \
+					ft_atof.c \
 					ft_atoi_base.c \
 					ft_atol.c \
 					ft_degtorad.c \

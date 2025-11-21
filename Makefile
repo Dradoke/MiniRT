@@ -17,13 +17,30 @@ SRC_DIR			=	src/
 
 # Source File
 SRC				=	$(addprefix src/, \
-					minirt.c \
+					$(DEBUG) \
+					$(PARSER) \
 					$(UTILS) \
+					minirt.c \
 					)
 
-# UTILS			=	$(addprefix utils/, \
-					color.c \
-					minirt_utils.c \
+DEBUG			=	$(addprefix debug/, \
+					see_data.c \
+					)
+
+PARSER			=	$(addprefix parser/, \
+					ft_lst_to_arr.c \
+					ft_parser.c \
+					parse_mesh.c \
+					parse_unique.c \
+					parse_value_1.c \
+					parse_value_2.c \
+					)
+
+UTILS			=	$(addprefix utils/, \
+					ft_error.c \
+					matrix.c \
+					vector1.c \
+					vector2.c \
 					)
 
 #•••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
