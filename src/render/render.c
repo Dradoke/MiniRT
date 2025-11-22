@@ -58,26 +58,36 @@ static t_vec3	rotate_vector(t_vec3 v, t_vec3 rotation)
  */
 static t_rgba	shoot_ray(t_ray *ray, t_scene *scene)
 {
-	(void)scene; // Pour l'instant, nous n'utilisons pas la scène.
-
-	// TODO: C'est ici que vous devez implémenter la logique d'intersection.
-	// 1. Itérer sur tous les objets de la scène.
-	// 2. Pour chaque objet, calculer s'il y a une intersection avec le rayon.
-	// 3. Garder l'intersection la plus proche.
-	// 4. Si une intersection est trouvée, calculer la couleur (lumière, ombres, etc.).
-	// 5. Sinon, renvoyer la couleur de fond (ex: un dégradé de ciel).
-
-	// Pour l'instant, on retourne un dégradé basé sur la direction Y du rayon
-	// pour visualiser que les rayons sont bien orientés.
-	double	t = 0.5 * (ray->dir.y + 1.0);
-	t_rgba	start_color = {{0, 170, 255, 255}}; // Bleu ciel
-	t_rgba	end_color = {{255, 255, 255, 255}}; // Blanc
 	t_rgba	color;
+	double	ax;
+	double	ay;
+	double	az;
 
-	color.r = (1.0 - t) * end_color.r + t * start_color.r;
-	color.g = (1.0 - t) * end_color.g + t * start_color.g;
-	color.b = (1.0 - t) * end_color.b + t * start_color.b;
-	color.a = 255;
+	(void)scene;
+	ax = fabs(ray->dir.x);
+	ay = fabs(ray->dir.y);
+	az = fabs(ray->dir.z);
+	if (ax > ay && ax > az)
+	{
+		if (ray->dir.x > 0)
+			color.color = 0x6464FFFF; // X+ Bleu Clair (R=100, G=100, B=255)
+		else
+			color.color = 0x000064FF; // X- Bleu Foncé (R=0, G=0, B=100)
+	}
+	else if (ay > ax && ay > az)
+	{
+		if (ray->dir.y > 0)
+			color.color = 0xFF6464FF; // Y+ Rouge Clair (R=255, G=100, B=100)
+		else
+			color.color = 0x640000FF; // Y- Rouge Foncé (R=100, G=0, B=0)
+	}
+	else
+	{
+		if (ray->dir.z > 0)
+			color.color = 0x64FF64FF; // Z+ Vert Clair (R=100, G=255, B=100)
+		else
+			color.color = 0x006400FF; // Z- Vert Foncé (R=0, G=100, B=0)
+	}
 	return (color);
 }
 
@@ -100,11 +110,12 @@ static void	perspective(t_data *data, t_ray *ray, uint32_t x, uint32_t y)
 	pixel_dir.z = -1.0; // Le plan est à une distance de -1 (convention)
 
 	// 3. Orienter le rayon selon la rotation de la caméra
-	pixel_dir = rotate_vector(pixel_dir, data->scene.cam.rotation);
+	// SUPPRIMÉ: La rotation est déjà appliquée par la matrice ci-dessous.
+	// pixel_dir = rotate_vector(pixel_dir, data->scene.cam.rotation);
 
 	// 4. Normaliser le vecteur direction et l'assigner au rayon
 	ray->dir = vec3_normalize(transform_ray_dir(pixel_dir,
-				data->scene.cam.transform));
+				data->scene.cam.matrix[NORMAL]));
 }
 
 static void	fisheye(t_data *data, t_ray *ray, uint32_t x, uint32_t y)
@@ -137,9 +148,9 @@ t_bool	ft_render(t_data *data)
 	t_i32	x;
 	t_i32	y;
 
-	ray.origin.x = data->scene.cam.transform[0][3];
-	ray.origin.y = data->scene.cam.transform[1][3];
-	ray.origin.z = data->scene.cam.transform[2][3];
+	ray.origin.x = data->scene.cam.matrix[NORMAL][0][3];
+	ray.origin.y = data->scene.cam.matrix[NORMAL][1][3];
+	ray.origin.z = data->scene.cam.matrix[NORMAL][2][3];
 	y = 0;
 	while (y < data->mlx->height)
 	{

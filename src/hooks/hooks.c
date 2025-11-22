@@ -7,8 +7,8 @@ static void	ft_cursor_hook(double xpos, double ypos, void* param)
 	data = param;
 	if (data->flags[RMB])
 	{
-		data->mouse_dx = xpos - data->last_pos[X];
-		data->mouse_dy = ypos - data->last_pos[Y];
+		data->mouse_dx += xpos - data->last_pos[X];
+		data->mouse_dy += ypos - data->last_pos[Y];
 	}
 	data->last_pos[X] = xpos;
 	data->last_pos[Y] = ypos;
@@ -24,9 +24,15 @@ static void	ft_mouse_hook(mouse_key_t button, action_t action,
 	if (button == MLX_MOUSE_BUTTON_RIGHT)
 	{
 		if (action == MLX_PRESS)
+		{
 			data->flags[RMB] = true;
+			mlx_set_cursor_mode(data->mlx, MLX_MOUSE_DISABLED);
+		}
 		else if (action == MLX_RELEASE)
+		{
 			data->flags[RMB] = false;
+			mlx_set_cursor_mode(data->mlx, MLX_MOUSE_NORMAL);
+		}
 	}
 }
 

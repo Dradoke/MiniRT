@@ -5,9 +5,9 @@
 # define WIDTH 256
 # define HEIGHT 256
 
-# define CAM_SENSI 1.0
-# define MOVE_SPEED 0.5
-# define ROLL_SPEED 0.05
+# define CAM_SENSI 0.01
+# define MOVE_SPEED 1.0
+# define ROLL_SPEED 1.0
 
 # define RESIZE_DEBOUNCE_TIME 0.15
 

@@ -10,6 +10,12 @@ enum e_count_type
 	MESH,
 };
 
+enum e_mat4_type
+{
+	NORMAL,
+	INVERTED,
+};
+
 typedef enum e_type
 {
 	NONE,
@@ -98,7 +104,7 @@ typedef t_f32 t_mat4[4][4];
 
 typedef struct s_cam
 {
-	t_mat4	transform;
+	t_mat4	matrix[2];
 	t_ui8	mode;
 	t_vec3	location;
 	t_vec3	rotation;
@@ -156,8 +162,7 @@ typedef struct s_triangle
 typedef struct s_mesh
 {
 	t_type	type;
-	t_mat4	transform;
-	t_mat4	inv_transform;
+	t_mat4	matrix[2];
 	union
 	{
 		t_sphere	sphere;

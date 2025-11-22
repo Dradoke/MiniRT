@@ -9,7 +9,6 @@ static void	compute_transform_matrices(t_node *node, t_mat4 *trans_m,
 	t_f32	h;
 
 	trans_vec = node->u_data.sphere.location;
-	/* mat4_* functions fill the output matrix via le premier argument (t_mat4 *) */
 	mat4_translation(trans_m, trans_vec);
 	mat4_identity(rot_m);
 	if (node->type == SP)
@@ -46,8 +45,6 @@ static void	build_transform(t_node *node, t_mat4 *out_transform,
 			1.0f / scale_m[0][0],
 			1.0f / scale_m[1][1],
 			1.0f / scale_m[2][2]}});
-	/* mat4_multiply(out, a, b) -> out = a * b
-	   les fonctions prennent maintenant t_mat4 *out en premier argument */
 	mat4_multiply(out_transform, rot_m, scale_m);
 	mat4_multiply(out_transform, trans_m, *out_transform);
 	mat4_multiply(out_inv_transform, rot_m, inv_trans_m);
@@ -65,11 +62,11 @@ static void	add_mesh(t_node *node, t_scene *scene)
 {
 	static int	i = 0;
 
-	ft_printfd(1, RED"INDEX MESH:%d\n"RESET, i);
 	scene->mesh[i].type = node->type;
-	ft_memcpy(&scene->mesh[i].u_data, &node->u_data, sizeof(node->u_data));
-	build_transform(node, &scene->mesh[i].transform,
-		&scene->mesh[i].inv_transform);
+	ft_memcpy(&scene->mesh[i].u_data, &node->u_data,
+		sizeof(scene->mesh[i].u_data));
+	build_transform(node, &scene->mesh[i].matrix[NORMAL],
+		&scene->mesh[i].matrix[INVERTED]);
 	i++;
 }
 
@@ -81,9 +78,6 @@ t_bool	ft_lst_to_arr(t_data *data)
 
 	scene = &data->scene;
 	lst = data->parse_list;
-	ft_printfd(1, "\n");
-	ft_printfd(1, "COUNT LIGHT: at %p is %d\n", &(scene->obj_count[LIGHT]), scene->obj_count[LIGHT]);
-	ft_printfd(1, "COUNT MESH: at %p is %d\n", &(scene->obj_count[MESH]), scene->obj_count[MESH]);
 	scene->light = ft_calloc(scene->obj_count[LIGHT] * sizeof(t_point_light));
 	scene->mesh = ft_calloc(scene->obj_count[MESH] * sizeof(t_mesh));
 	while (lst)
@@ -92,7 +86,12 @@ t_bool	ft_lst_to_arr(t_data *data)
 		if (node->type == A)
 			scene->ambient_light = node->u_data.ambient_light;
 		if (node->type == C)
+		{
 			scene->cam = node->u_data.cam;
+			build_transform(node, &scene->cam.matrix[NORMAL],
+				&scene->cam.matrix[INVERTED]);
+
+		}
 		if (node->type == L)
 			add_light(node, scene);
 		if (node->type >= SP && node->type <= TR)

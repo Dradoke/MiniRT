@@ -88,7 +88,8 @@ static void	see_camera(t_cam *cam, int indent)
 	while (i++ < indent)
 		printf("  ");
 	printf("%s[CAMERA]%s @%p\n", BOLD GREEN, RESET, (void *)cam);
-	see_mat4(cam->transform, "Transform", indent + 1);
+	see_mat4(cam->matrix[NORMAL], "Normal Matrix", indent + 1);
+	see_mat4(cam->matrix[INVERTED], "Inverted Matrix", indent + 1);
 	i = 0;
 	while (i++ < indent + 1)
 		printf("  ");
@@ -204,8 +205,8 @@ static void	see_mesh(t_mesh *mesh, int indent, int idx)
 		printf("  ");
 	printf("%s[MESH #%d - %s]%s @%p\n", BOLD BLUE, idx,
 		get_type_name(mesh->type), RESET, (void *)mesh);
-	see_mat4(mesh->transform, "Transform", indent + 1);
-	see_mat4(mesh->inv_transform, "Inv Transform", indent + 1);
+	see_mat4(mesh->matrix[NORMAL], "Transform", indent + 1);
+	see_mat4(mesh->matrix[INVERTED], "Inv Transform", indent + 1);
 	see_mesh_data(mesh, indent + 1);
 }
 
