@@ -22,7 +22,12 @@ static t_bool	parse_object(t_data *data, char **token)
 		return (parse_unique(data, token));
 	else if (!ft_strcmp(token[0], "sp") || !ft_strcmp(token[0], "pl")
 		|| !ft_strcmp(token[0], "cy") || !ft_strcmp(token[0], "tr"))
-		return (data->scene.obj_count[MESH]++, parse_mesh(data, token));
+	{
+		if (!parse_mesh(data, token))
+			return (FALSE);
+		(data->scene.obj_count[MESH])++;
+		return (TRUE);
+	}
 	return (FALSE);
 }
 

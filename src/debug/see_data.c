@@ -48,6 +48,38 @@ static void	see_ambient_light(t_ambient_light *al, int indent)
 	see_rgba(al->color, "Color", indent + 1);
 }
 
+static void	see_mat4(t_mat4 mat, char *name, int indent)
+{
+	int	i;
+	int	j;
+	int	k;
+
+	i = 0;
+	while (i++ < indent)
+		printf("  ");
+	printf("%s%s:%s\n", CYAN, name, RESET);
+	i = -1;
+	while (++i < 4)
+	{
+		k = 0;
+		while (k++ < indent + 1)
+			printf("  ");
+		j = -1;
+		while (++j < 4)
+			printf("%7.3f ", mat[i][j]);
+		printf("\n");
+	}
+}
+
+static char	*get_cam_mode_name(t_ui8 mode)
+{
+	if (mode == STANDING)
+		return ("STANDING");
+	else if (mode == PLANE)
+		return ("PLANE");
+	return ("UNKNOWN");
+}
+
 static void	see_camera(t_cam *cam, int indent)
 {
 	int	i;
@@ -56,6 +88,11 @@ static void	see_camera(t_cam *cam, int indent)
 	while (i++ < indent)
 		printf("  ");
 	printf("%s[CAMERA]%s @%p\n", BOLD GREEN, RESET, (void *)cam);
+	see_mat4(cam->transform, "Transform", indent + 1);
+	i = 0;
+	while (i++ < indent + 1)
+		printf("  ");
+	printf("%sMode:%s %s\n", CYAN, RESET, get_cam_mode_name(cam->mode));
 	see_vec3(cam->location, "Location", indent + 1);
 	see_vec3(cam->rotation, "Rotation", indent + 1);
 	i = 0;
@@ -137,29 +174,6 @@ static void	see_mesh_data(t_mesh *mesh, int indent)
 		see_triangle(&mesh->u_data.triangle, indent);
 }
 
-static void	see_mat4(t_mat4 *mat, char *name, int indent)
-{
-	int	i;
-	int	j;
-	int	k;
-
-	i = 0;
-	while (i++ < indent)
-		printf("  ");
-	printf("%s%s:%s\n", CYAN, name, RESET);
-	i = -1;
-	while (++i < 4)
-	{
-		k = 0;
-		while (k++ < indent + 1)
-			printf("  ");
-		j = -1;
-		while (++j < 4)
-			printf("%7.3f ", mat->m[i][j]);
-		printf("\n");
-	}
-}
-
 static char	*get_type_name(t_type type)
 {
 	if (type == NONE)
@@ -190,8 +204,8 @@ static void	see_mesh(t_mesh *mesh, int indent, int idx)
 		printf("  ");
 	printf("%s[MESH #%d - %s]%s @%p\n", BOLD BLUE, idx,
 		get_type_name(mesh->type), RESET, (void *)mesh);
-	see_mat4(&mesh->transform, "Transform", indent + 1);
-	see_mat4(&mesh->inv_transform, "Inv Transform", indent + 1);
+	see_mat4(mesh->transform, "Transform", indent + 1);
+	see_mat4(mesh->inv_transform, "Inv Transform", indent + 1);
 	see_mesh_data(mesh, indent + 1);
 }
 
@@ -238,6 +252,69 @@ static void	see_scene(t_scene *scene, int indent)
 	see_meshes(scene, indent + 1);
 }
 
+static void	print_flag(char *name, t_bool value)
+{
+	if (value)
+		printf("%s%s:ON%s", GREEN, name, RESET);
+	else
+		printf("%s%s:OFF%s", RED, name, RESET);
+}
+
+static void	see_flags(t_data *data)
+{
+	printf("  %sflags:%s [", CYAN, RESET);
+	print_flag("RMB", data->flags[RMB]);
+	printf(", ");
+	print_flag("FISHEYE", data->flags[FISHEYE]);
+	printf(", ");
+	print_flag("NEED_RENDER", data->flags[NEED_RENDER]);
+	printf("]\n");
+}
+
+static void	see_keys_row(t_data *data, int start, int end)
+{
+	char	*key_names[11];
+	int		i;
+
+	key_names[0] = "Q";
+	key_names[1] = "W";
+	key_names[2] = "E";
+	key_names[3] = "A";
+	key_names[4] = "S";
+	key_names[5] = "D";
+	key_names[6] = "P";
+	key_names[7] = "C";
+	key_names[8] = "SPACE";
+	key_names[9] = "CTRL";
+	i = start - 1;
+	while (++i < end)
+	{
+		if (i > start)
+			printf(", ");
+		print_flag(key_names[i], data->keys[i]);
+	}
+}
+
+static void	see_keys(t_data *data)
+{
+	printf("  %skeys:%s [", CYAN, RESET);
+	see_keys_row(data, 0, 6);
+	printf("]\n");
+	printf("        [");
+	see_keys_row(data, 6, KEY_COUNT);
+	printf("]\n");
+}
+
+static void	see_mouse_data(t_data *data)
+{
+	printf("  %slast_pos:%s [%.2f, %.2f]\n", CYAN, RESET,
+		data->last_pos[0], data->last_pos[1]);
+	printf("  %smouse_delta:%s dx=%.2f, dy=%.2f\n", CYAN, RESET,
+		data->mouse_dx, data->mouse_dy);
+	printf("  %slast_resize_time:%s %.3f\n", CYAN, RESET,
+		data->last_resize_time);
+}
+
 void	see_data(t_data *data)
 {
 	printf("\n%s╔════════════════════════════════════════╗%s\n",
@@ -250,6 +327,9 @@ void	see_data(t_data *data)
 	printf("  %smlx:%s @%p\n", CYAN, RESET, (void *)data->mlx);
 	printf("  %simg:%s @%p\n", CYAN, RESET, (void *)data->img);
 	printf("  %sparse_list:%s @%p\n", CYAN, RESET, (void *)data->parse_list);
+	see_flags(data);
+	see_keys(data);
+	see_mouse_data(data);
 	printf("\n");
 	see_scene(&data->scene, 1);
 	printf("\n%s════════════════════════════════════════%s\n\n",

@@ -1,40 +1,32 @@
 #include "minirt.h"
+#include <string.h>
 
-t_mat4	mat4_identity(void)
+void	mat4_identity(t_mat4 *out)
 {
-	t_mat4	m;
-
-	ft_bzero(&m, sizeof(t_mat4));
-	m.m[0][0] = 1.0f;
-	m.m[1][1] = 1.0f;
-	m.m[2][2] = 1.0f;
-	m.m[3][3] = 1.0f;
-	return (m);
+	ft_bzero(out, sizeof(t_mat4));
+	(*out)[0][0] = 1.0f;
+	(*out)[1][1] = 1.0f;
+	(*out)[2][2] = 1.0f;
+	(*out)[3][3] = 1.0f;
 }
 
-t_mat4	mat4_translation(t_vec3 v)
+void	mat4_translation(t_mat4 *out, t_vec3 v)
 {
-	t_mat4	m;
-
-	m = mat4_identity();
-	m.m[0][3] = v.x;
-	m.m[1][3] = v.y;
-	m.m[2][3] = v.z;
-	return (m);
+	mat4_identity(out);
+	(*out)[0][3] = v.x;
+	(*out)[1][3] = v.y;
+	(*out)[2][3] = v.z;
 }
 
-t_mat4	mat4_scaling(t_vec3 v)
+void	mat4_scaling(t_mat4 *out, t_vec3 v)
 {
-	t_mat4	m;
-
-	m = mat4_identity();
-	m.m[0][0] = v.x;
-	m.m[1][1] = v.y;
-	m.m[2][2] = v.z;
-	return (m);
+	mat4_identity(out);
+	(*out)[0][0] = v.x;
+	(*out)[1][1] = v.y;
+	(*out)[2][2] = v.z;
 }
 
-t_mat4	mat4_multiply(t_mat4 a, t_mat4 b)
+void	mat4_multiply(t_mat4 *out, const t_mat4 a, const t_mat4 b)
 {
 	t_mat4	result;
 	int		i;
@@ -46,39 +38,37 @@ t_mat4	mat4_multiply(t_mat4 a, t_mat4 b)
 		j = 0;
 		while (j < 4)
 		{
-			result.m[i][j] = a.m[i][0] * b.m[0][j]
-				+ a.m[i][1] * b.m[1][j]
-				+ a.m[i][2] * b.m[2][j]
-				+ a.m[i][3] * b.m[3][j];
+			result[i][j] = a[i][0] * b[0][j]
+				+ a[i][1] * b[1][j]
+				+ a[i][2] * b[2][j]
+				+ a[i][3] * b[3][j];
 			j++;
 		}
 		i++;
 	}
-	return (result);
+	memcpy(*out, result, sizeof(t_mat4));
 }
 
-t_mat4	mat4_look_at(t_vec3 from, t_vec3 to, t_vec3 up_temp)
+void	mat4_look_at(t_mat4 *out, t_vec3 from, t_vec3 to, t_vec3 up_temp)
 {
 	t_vec3	forward;
 	t_vec3	right;
 	t_vec3	up;
-	t_mat4	cam_to_world;
 
 	forward = vec3_normalize(vec3_sub(to, from));
 	right = vec3_normalize(vec3_cross(up_temp, forward));
 	up = vec3_cross(forward, right);
-	cam_to_world = mat4_identity();
-	cam_to_world.m[0][0] = right.x;
-	cam_to_world.m[0][1] = up.x;
-	cam_to_world.m[0][2] = forward.x;
-	cam_to_world.m[0][3] = from.x;
-	cam_to_world.m[1][0] = right.y;
-	cam_to_world.m[1][1] = up.y;
-	cam_to_world.m[1][2] = forward.y;
-	cam_to_world.m[1][3] = from.y;
-	cam_to_world.m[2][0] = right.z;
-	cam_to_world.m[2][1] = up.z;
-	cam_to_world.m[2][2] = forward.z;
-	cam_to_world.m[2][3] = from.z;
-	return (cam_to_world);
+	mat4_identity(out);
+	(*out)[0][0] = right.x;
+	(*out)[0][1] = up.x;
+	(*out)[0][2] = forward.x;
+	(*out)[0][3] = from.x;
+	(*out)[1][0] = right.y;
+	(*out)[1][1] = up.y;
+	(*out)[1][2] = forward.y;
+	(*out)[1][3] = from.y;
+	(*out)[2][0] = right.z;
+	(*out)[2][1] = up.z;
+	(*out)[2][2] = forward.z;
+	(*out)[2][3] = from.z;
 }

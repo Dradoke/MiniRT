@@ -18,13 +18,19 @@ SRC_DIR			=	src/
 # Source File
 SRC				=	$(addprefix src/, \
 					$(DEBUG) \
+					$(HOOKS) \
 					$(PARSER) \
+					$(RENDER) \
 					$(UTILS) \
 					minirt.c \
 					)
 
 DEBUG			=	$(addprefix debug/, \
 					see_data.c \
+					)
+
+HOOKS			=	$(addprefix hooks/, \
+					hooks.c \
 					)
 
 PARSER			=	$(addprefix parser/, \
@@ -34,6 +40,11 @@ PARSER			=	$(addprefix parser/, \
 					parse_unique.c \
 					parse_value_1.c \
 					parse_value_2.c \
+					)
+
+RENDER			=	$(addprefix render/, \
+					cam.c \
+					render.c \
 					)
 
 UTILS			=	$(addprefix utils/, \
