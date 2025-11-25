@@ -10,6 +10,12 @@ enum e_count_type
 	MESH,
 };
 
+enum e_mat4_type
+{
+	NORMAL,
+	INVERTED,
+};
+
 typedef enum e_type
 {
 	NONE,
@@ -26,7 +32,30 @@ typedef enum e_flags
 {
 	RMB,
 	FISHEYE,
+	NEED_RENDER,
+	FLAG_COUNT,
 }	t_flags;
+
+typedef enum t_cam_mode
+{
+	STANDING,
+	PLANE,
+}	t_cam_mode;
+
+typedef enum e_keys
+{
+	FTKEY_Q,
+	FTKEY_W,
+	FTKEY_E,
+	FTKEY_A,
+	FTKEY_S,
+	FTKEY_D,
+	FTKEY_P,
+	FTKEY_C,
+	FTKEY_SPACE,
+	FTKEY_CTRL,
+	KEY_COUNT,
+}	t_keys;
 
 typedef enum e_axis
 {
@@ -69,22 +98,17 @@ typedef struct s_ray
 	t_vec3	dir;
 }	t_ray;
 
-typedef struct s_mat4
-{
-	t_f32	m[4][4];
-}	t_mat4;
+typedef t_f32 t_mat4[4][4];
 
 //••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••• CAMERA
 
 typedef struct s_cam
 {
+	t_mat4	matrix[2];
+	t_ui8	mode;
 	t_vec3	location;
 	t_vec3	rotation;
-	t_vec3	forward;
-	t_vec3	right;
-	t_vec3	up;
 	t_ui8	aov;
-	t_f32	aspect_ratio;
 }	t_cam;
 
 //•••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••• LIGHT
@@ -138,8 +162,7 @@ typedef struct s_triangle
 typedef struct s_mesh
 {
 	t_type	type;
-	t_mat4	transform;
-	t_mat4	inv_transform;
+	t_mat4	matrix[2];
 	union
 	{
 		t_sphere	sphere;
@@ -174,7 +197,7 @@ typedef struct s_scene
 	t_cam			cam;
 	t_point_light	*light;
 	t_mesh			*mesh;
-	int				obj_count[2];
+	t_i32			obj_count[2];
 	unsigned int	seed;
 }	t_scene;
 
@@ -184,8 +207,12 @@ typedef struct s_data
 	mlx_image_t	*img;
 	t_scene		scene;
 	t_list		*parse_list;
-	t_ui8		flags[2];
+	t_bool		flags[FLAG_COUNT];
+	t_bool		keys[KEY_COUNT];
 	t_f64		last_pos[2];
+	t_f64		mouse_dx;
+	t_f64		mouse_dy;
+	t_f64		last_resize_time;
 }	t_data;
 
 //••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••

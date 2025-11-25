@@ -241,23 +241,23 @@ t_vec3 mat4_mul_vec3(t_mat4 m, t_vec3 v, double w)
 {
 	t_vec3 out;
 
-	out.x = m.m[0][0] * v.x + m.m[0][1] * v.y + m.m[0][2] * v.z + m.m[0][3] * w;
-	out.y = m.m[1][0] * v.x + m.m[1][1] * v.y + m.m[1][2] * v.z + m.m[1][3] * w;
-	out.z = m.m[2][0] * v.x + m.m[2][1] * v.y + m.m[2][2] * v.z + m.m[2][3] * w;
+	out.x = m[0][0] * v.x + m[0][1] * v.y + m[0][2] * v.z + m[0][3] * w;
+	out.y = m[1][0] * v.x + m[1][1] * v.y + m[1][2] * v.z + m[1][3] * w;
+	out.z = m[2][0] * v.x + m[2][1] * v.y + m[2][2] * v.z + m[2][3] * w;
 
 	return out;
 }
 
-t_mat4 mat4_transpose(t_mat4 m)
-{
-	t_mat4 out;
+// t_mat4 mat4_transpose(t_mat4 m)
+// {
+// 	t_mat4 out;
 
-	for (int i = 0; i < 4; i++)
-		for (int j = 0; j < 4; j++)
-			out.m[i][j] = m.m[j][i];
+// 	for (int i = 0; i < 4; i++)
+// 		for (int j = 0; j < 4; j++)
+// 			out[i][j] = m[j][i];
 
-	return out;
-}
+// 	return out;
+// }
 
 t_ray transform_ray_world_to_local(t_ray r, t_mat4 inv)
 {
@@ -270,13 +270,13 @@ t_ray transform_ray_world_to_local(t_ray r, t_mat4 inv)
 	return out;
 }
 
-void transform_hit_local_to_world(t_hit_record *hit, t_mat4 transform, t_mat4 inv_transform)
-{
-	hit->p = mat4_mul_vec3(transform, hit->p, 1.0);
-	t_mat4 invT = mat4_transpose(inv_transform);
-	hit->n = mat4_mul_vec3(invT, hit->n, 0.0);
-	hit->n = ft_normalize(hit->n);
-}
+// void transform_hit_local_to_world(t_hit_record *hit, t_mat4 transform, t_mat4 inv_transform)
+// {
+// 	hit->p = mat4_mul_vec3(transform, hit->p, 1.0);
+// 	t_mat4 invT = mat4_transpose(inv_transform);
+// 	hit->n = mat4_mul_vec3(invT, hit->n, 0.0);
+// 	hit->n = ft_normalize(hit->n);
+// }
 
 t_bool	hit_sphere(t_hit_record *hit, t_sphere sphere, t_ray ray)
 {

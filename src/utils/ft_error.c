@@ -14,6 +14,8 @@ void	ft_clean_all(t_data	*data)
 {
 	if (!data)
 		return ;
+	if (data->mlx)
+		mlx_terminate(data->mlx);
 	if (data->parse_list)
 		ft_lstclear(&data->parse_list, free);
 	if (data->scene.light)

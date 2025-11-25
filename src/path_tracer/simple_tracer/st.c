@@ -180,3 +180,42 @@ t_rgba	trace_path(t_ray ray, t_scene scene, int depth)
     /* convertir et retourner */
     return (rgb_to_rgba(out_rgb));
 }
+
+t_rgba	ray_trace(t_ray ray, t_scene scene, int depth)
+{
+    t_path_tracing	data;
+
+    /* 1. Sécurités de base */
+    if (depth <= 0)
+        return (t_rgba){{0, 0, 0, 0}};
+    
+    /* 2. Si le rayon ne touche rien -> Couleur du ciel/Ambiante */
+    if (!hit_world(&ray, &scene, &data.hit))
+        return (scene.ambient_light.color);
+
+    /* 4. CALCUL DE LA LUMIÈRE DIRECTE (Ombres + Couleur de l'objet) */
+    t_rgba direct = ft_calc_direct_light(data.hit, scene);
+
+    /* --- MODIFICATION ICI --- */
+    /* On retourne DIRECTEMENT la lumière directe. */
+    /* On coupe toute la partie "Indirect / Rebond / Récursion" */
+    
+    return (direct);
+
+    /* TOUT LE CODE CI-DESSOUS DEVIENT INUTILE (Tu peux le supprimer ou le commenter) */
+    /*
+    t_rgb direct_rgb = rgba_to_rgb(direct);
+
+    data.d_local = get_local_dir(&scene.seed);
+    data.d_new = get_rand_dir(data.hit, data.d_local);
+    data.next_ray = ft_create_reb_ray(data.d_new, data.hit);
+    t_rgba entrant = trace_path(data.next_ray, scene, depth - 1);
+
+    t_rgb entrant_rgb = rgba_to_rgb(entrant);
+    t_rgb albedo_rgb = rgba_to_rgb(data.hit.color);
+    t_rgb indirect_rgb = rgb_mult_rgb(entrant_rgb, albedo_rgb);
+
+    t_rgb out_rgb = rgb_add(direct_rgb, indirect_rgb);
+    return (rgb_to_rgba(out_rgb));
+    */
+}

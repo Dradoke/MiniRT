@@ -13,7 +13,7 @@
 
 /// @def Sample Per Pixel
 # ifndef SPP
-#  define SPP 16
+#  define SPP 2
 # endif
 
 # define RANDF_MIN 0.0
@@ -141,4 +141,5 @@ t_rgb rgb_mult_rgb(t_rgb a, t_rgb b);
 t_rgb rgb_add(t_rgb a, t_rgb b);
 t_bool	hit_world(t_ray *ray_wld, const t_scene *scene, t_hit_record *out);
 t_rgba	trace_path(t_ray ray, t_scene scene, int depth);
+t_rgba	ray_trace(t_ray ray, t_scene scene, int depth);
 #endif

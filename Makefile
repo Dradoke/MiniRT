@@ -18,20 +18,43 @@ SRC_DIR			=	src/
 # Source File
 SRC				=	$(addprefix src/, \
 					minirt.c \
-					parser/ft_lst_to_arr.c \
-					parser/ft_parser.c \
-					parser/parse_mesh.c \
-					parser/parse_unique.c \
-					parser/parse_value_1.c \
-					parser/parse_value_2.c \
+					$(DEBUG) \
+					$(HOOKS) \
+					$(PARSER) \
+					$(RENDER) \
+					$(UTILS) \
 					path_tracer/simple_tracer/st.c \
 					path_tracer/restir_utils.c \
-					$(UTILS) \
+					)
+
+DEBUG			=	$(addprefix debug/, \
+					see_data.c \
+					)
+
+HOOKS			=	$(addprefix hooks/, \
+					hooks.c \
+					)
+
+PARSER			=	$(addprefix parser/, \
+					ft_lst_to_arr.c \
+					ft_parser.c \
+					parse_mesh.c \
+					parse_unique.c \
+					parse_value_1.c \
+					parse_value_2.c \
+					)
+
+RENDER			=	$(addprefix render/, \
+					cam.c \
+					render.c \
 					)
 
 UTILS			=	$(addprefix utils/, \
 					ft_error.c \
 					matrix.c \
+					matrix2.c \
+					vector1.c \
+					vector2.c \
 					)
 
 #•••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••

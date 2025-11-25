@@ -38,12 +38,15 @@ static t_bool	parse_point_light(t_data *data, char **token)
 	node = ft_calloc(sizeof(t_node));
 	if (!node)
 		return (FALSE);
-	ft_lstadd_back(&data->parse_list, ft_lstnew(node));
 	node->type = L;
 	if (!parse_vec3(token[1], &node->u_data.point_light.location)
 		|| !parse_brightness(token[2], &node->u_data.point_light.brightness)
 		|| !parse_color(token[3], &node->u_data.point_light.color))
+	{
+		free(node);
 		return (FALSE);
+	}
+	ft_lstadd_back(&data->parse_list, ft_lstnew(node));
 	return (TRUE);
 }
 
@@ -54,6 +57,11 @@ t_bool	parse_unique(t_data *data, char **token)
 	if (!ft_strcmp(token[0], "C"))
 		return (parse_camera(data, token));
 	if (!ft_strcmp(token[0], "L"))
-		return (data->scene.obj_count[LIGHT]++, parse_point_light(data, token));
+	{
+		if (!parse_point_light(data, token))
+			return (FALSE);
+		(data->scene.obj_count[LIGHT])++;
+		return (TRUE);
+	}
 	return (FALSE);
 }

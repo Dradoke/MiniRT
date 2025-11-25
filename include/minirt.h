@@ -2,6 +2,17 @@
 # define MINIRT_H
 //••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
 
+# define WIDTH 720
+# define HEIGHT 800
+
+# define CAM_SENSI 0.01
+# define MOVE_SPEED 1.0
+# define ROLL_SPEED 1.0
+
+# define RESIZE_DEBOUNCE_TIME 0.15
+
+//••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+
 # include <unistd.h>		// read, write, close
 # include <fcntl.h>			// open
 # include <stdlib.h>		// malloc, free, exit
@@ -13,10 +24,11 @@
 # include "MLX42.h"	// MinilibX
 # include "libft.h"			// LibFT
 
+# include "colors.h"
+# include "fterr.h"
 # include "struct.h"
 # include "prototype.h"
 # include "restir.h"
-# include "fterr.h"
 
 //••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
 #endif
