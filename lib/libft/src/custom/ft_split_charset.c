@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split_charset.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ngaudoui <ngaudoui@student.42lehavre.fr    +#+  +:+       +#+        */
+/*   By: MV42                                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 21:42:42 by MV42              #+#    #+#             */
-/*   Updated: 2025/11/12 16:51:14 by ngaudoui         ###   ########.fr       */
+/*   Updated: 2024/12/21 21:42:42 by MV42             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,15 +48,15 @@ static void	get_counts(const char *s, const char *charset,
 	}
 }
 
-static void	process_char(const char **s_ptr, char **str_buf_ptr,
-	t_bool *in_word)
+static void	process_char(char **result_ptr, const char *s_char,
+	char **str_buf_ptr, t_bool *in_word)
 {
 	if (!*in_word)
 	{
 		*in_word = TRUE;
-		*(char ***)s_ptr = str_buf_ptr;
+		*result_ptr = *str_buf_ptr;
 	}
-	**str_buf_ptr = **s_ptr;
+	**str_buf_ptr = *s_char;
 	(*str_buf_ptr)++;
 }
 
@@ -71,8 +71,11 @@ static void	populate_split(char **result, char *strings_buffer,
 	while (*s)
 	{
 		if (!is_in_charset(*s, charset))
-			process_char((const char **)&result[i++], &strings_buffer,
-				&in_word);
+		{
+			process_char(&result[i], s, &strings_buffer, &in_word);
+			if (!(*s && !is_in_charset(*(s + 1), charset)))
+				i++;
+		}
 		else
 		{
 			if (in_word)
@@ -87,15 +90,14 @@ static void	populate_split(char **result, char *strings_buffer,
 		*strings_buffer = '\0';
 }
 
-/**
- * @brief Splits a string by a set of characters, allocating a single
- * contiguous block of memory. The entire result can be freed with a single
- * call to free() on the returned pointer.
- * 
- * @param s The string to split.
- * @param charset A string containing all delimiter characters.
- * @return A null-terminated array of strings, or NULL if allocation fails.
- */
+/// @brief Splits a string by a set of characters, allocating a single
+/// contiguous block of memory. The entire result can be freed with a single
+/// call to free() on the returned pointer.
+/// @param s The string to split.
+/// @param charset A string containing all delimiter characters.
+/// @return char **
+/// @retval Success: A null-terminated array of strings
+/// @retval Fail: NULL if allocation fails.
 char	**ft_split_charset(const char *s, const char *charset)
 {
 	char	**result;

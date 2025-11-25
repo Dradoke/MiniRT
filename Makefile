@@ -18,12 +18,20 @@ SRC_DIR			=	src/
 # Source File
 SRC				=	$(addprefix src/, \
 					minirt.c \
+					parser/ft_lst_to_arr.c \
+					parser/ft_parser.c \
+					parser/parse_mesh.c \
+					parser/parse_unique.c \
+					parser/parse_value_1.c \
+					parser/parse_value_2.c \
+					path_tracer/simple_tracer/st.c \
+					path_tracer/restir_utils.c \
 					$(UTILS) \
 					)
 
-# UTILS			=	$(addprefix utils/, \
-					color.c \
-					minirt_utils.c \
+UTILS			=	$(addprefix utils/, \
+					ft_error.c \
+					matrix.c \
 					)
 
 #•••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••

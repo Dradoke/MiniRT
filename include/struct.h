@@ -16,11 +16,24 @@ typedef enum e_type
 	A,
 	C,
 	L,
-	sp,
-	pl,
-	cy,
-	tr,
+	SP,
+	PL,
+	CY,
+	TR,
 }	t_type;
+
+typedef enum e_flags
+{
+	RMB,
+	FISHEYE,
+}	t_flags;
+
+typedef enum e_axis
+{
+	X,
+	Y,
+	Z,
+}	t_axis;
 
 //•••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••• COLOR
 
@@ -67,7 +80,11 @@ typedef struct s_cam
 {
 	t_vec3	location;
 	t_vec3	rotation;
+	t_vec3	forward;
+	t_vec3	right;
+	t_vec3	up;
 	t_ui8	aov;
+	t_f32	aspect_ratio;
 }	t_cam;
 
 //•••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••• LIGHT
@@ -92,7 +109,6 @@ typedef struct s_sphere
 	t_vec3	location;
 	t_f32	diameter;
 	t_rgba	color;
-	t_f32	radius;
 }	t_sphere;
 
 typedef struct s_plane
@@ -159,6 +175,7 @@ typedef struct s_scene
 	t_point_light	*light;
 	t_mesh			*mesh;
 	int				obj_count[2];
+	unsigned int	seed;
 }	t_scene;
 
 typedef struct s_data
@@ -167,6 +184,8 @@ typedef struct s_data
 	mlx_image_t	*img;
 	t_scene		scene;
 	t_list		*parse_list;
+	t_ui8		flags[2];
+	t_f64		last_pos[2];
 }	t_data;
 
 //••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••

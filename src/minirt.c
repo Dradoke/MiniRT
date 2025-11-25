@@ -1,15 +1,147 @@
 #include "minirt.h"
-/*Cette fonction prend la direction candidate Xj  et le point d'ombrage P comme entrées, et retourne un vecteur de flottants RVB.*/
-// t_rgb	*get_distrib_cible_potential(t_vec3 dir, t_vec3 pos)
-// {
+#include "MLX42.h"
 
+#define WIDTH 800
+#define HEIGHT 600
+#define MAX_DEPTH 5
+
+// uint32_t ft_rgba_to_uint(t_rgba c)
+// {
+//     // Clamp chaque composante entre 0.0 et 1.0 puis convertir en 0-255
+//     uint8_t r = (uint8_t)(fminf(fmaxf(c.r, 0.0f), 1.0f) * 255.0f);
+//     uint8_t g = (uint8_t)(fminf(fmaxf(c.g, 0.0f), 1.0f) * 255.0f);
+//     uint8_t b = (uint8_t)(fminf(fmaxf(c.b, 0.0f), 1.0f) * 255.0f);
+//     uint8_t a = (uint8_t)(fminf(fmaxf(c.a, 0.0f), 1.0f) * 255.0f);
+
+//     // MLX42 attend ARGB ou RGBA selon la plateforme, ici on fait RGBA :
+//     return ((uint32_t)r << 24) | ((uint32_t)g << 16) | ((uint32_t)b << 8) | ((uint32_t)a);
 // }
 
-// t_vec3	get_vector(t_vec3 origine, t_vec3 dest)
-// {
-// 	return ((t_vec3){dest.x - origine.x, dest.y - origine.y,
-// 		dest.z - origine.z});
-// }
+
+void    build_camera_basis(t_cam *cam)
+{
+    t_vec3 world_up = {{0, 1, 0}};  // "haut" du monde
+    t_vec3 forward = ft_normalize(cam->rotation);
+
+    t_vec3 right;
+    if (fabs(forward.x) > 0.999f && fabs(forward.z) < 0.001f)
+        world_up = (t_vec3){{0, 0, 1}};  // éviter colinéarité
+
+    right = ft_normalize(ft_cross(world_up, forward));
+    t_vec3 up = ft_cross(forward, right);
+
+    cam->forward = forward;
+    cam->right = right;
+    cam->up = up;
+
+    cam->aspect_ratio = (float)WIDTH / HEIGHT;  // nécessaire pour le rendu
+}
+
+t_ray generate_camera_ray(t_cam *cam, int x, int y, int w, int h)
+{
+    float px = (2.0f * ((x + 0.5f) / w) - 1.0f)
+             * tanf(cam->aov * 0.5f * PI / 180.0f)
+             * cam->aspect_ratio;
+
+    float py = (1.0f - 2.0f * ((y + 0.5f) / h))
+             * tanf(cam->aov * 0.5f * PI / 180.0f);
+
+    t_vec3 dir = ft_normalize(ft_vec3_add(
+                    ft_vec3_add(ft_vec3_scale(cam->right, px),
+                                ft_vec3_scale(cam->up, py)),
+                    cam->forward));
+
+    return (t_ray){ cam->location, dir };
+}
+
+/* (ft_rgba_to_uint, build_camera_basis, generate_camera_ray restent ceux du fichier actif) */
+
+int main(int argc, char **argv)
+{
+    if (argc != 2)
+    {
+        fprintf(stderr, "Usage: %s <file.rt>\n", argv[0]);
+        return 1;
+    }
+
+    t_data *data = ft_calloc(sizeof(*data)); /* corrige l'appel à ft_calloc */
+    if (!data)
+    {
+        fprintf(stderr, "Error malloc data\n");
+        return 1;
+    }
+
+    ft_init_random_seed(&data->scene.seed);
+
+    if (!ft_parser(data, argv[1]))
+    {
+        fprintf(stderr, "Parser error\n");
+        return 1;
+    }
+
+    if (!data->scene.cam.aov)
+    {
+        fprintf(stderr, "No camera in scene\n");
+        return 1;
+    }
+    // data->scene.ambient_light.brightness = 0.0; // désactiver ambiant pour test
+    // data->scene.light[0].color = (t_rgba){{255, 255, 255, 255}}; // augmenter intensité lumière pour test
+    build_camera_basis(&data->scene.cam);
+
+    mlx_t *mlx = mlx_init(WIDTH, HEIGHT, "miniRT", true);
+    if (!mlx)
+    {
+        fprintf(stderr, "MLX init fail\n");
+        return 1;
+    }
+
+    mlx_image_t *img = mlx_new_image(mlx, WIDTH, HEIGHT);
+    if (!img)
+    {
+        fprintf(stderr, "MLX image fail\n");
+        return 1;
+    }
+
+    if (mlx_image_to_window(mlx, img, 0, 0) < 0)
+    {
+        fprintf(stderr, "Window fail\n");
+        return 1;
+    }
+
+    /* debug rapide : afficher couleur renvoyée par trace_path pour quelques rayons */
+    {
+        t_ray r_center = generate_camera_ray(&data->scene.cam, WIDTH/2, HEIGHT/2, WIDTH, HEIGHT);
+        trace_path(r_center, data->scene, MAX_DEPTH);
+
+        /* rayon direct vers le premier cylindre (si trouvé) */
+        for (int i = 0; i < data->scene.obj_count[MESH]; ++i)
+        {
+            if (data->scene.mesh[i].type == CY)
+            {
+                t_vec3 target = data->scene.mesh[i].u_data.cylinder.location;
+                t_vec3 dir = ft_normalize(ft_vec3_sub(target, data->scene.cam.location));
+                t_ray r_to_cyl = (t_ray){ data->scene.cam.location, dir };
+                trace_path(r_to_cyl, data->scene, MAX_DEPTH);
+                break;
+            }
+        }
+    }
+
+    for (int y = 0; y < HEIGHT; y++)
+    {
+        for (int x = 0; x < WIDTH; x++)
+        {
+            t_ray ray = generate_camera_ray(&data->scene.cam, x, y, WIDTH, HEIGHT);
+            t_rgba color = trace_path(ray, data->scene, MAX_DEPTH);
+            uint32_t pixel = ft_rgba_to_uint(color);
+            mlx_put_pixel(img, x, y, pixel);
+        }
+    }
+
+    mlx_loop(mlx);
+    return 0;
+}
+
 
 
 

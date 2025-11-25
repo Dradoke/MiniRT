@@ -97,6 +97,7 @@ typedef struct	s_path_tracing
 {
 	t_hit_record	hit;
 	t_vec3			d_new;
+	t_vec3			d_local;
 	t_rgba			direct_light;
 	t_rgba			indirect_light;
 	t_ray			next_ray;
@@ -117,15 +118,27 @@ typedef struct s_hit_sp_data
 	double	t2;
 }	t_hit_sp_data;
 
-float	get_scalaire(t_vec3 vec1, t_vec3 vec2);
+float	ft_get_scalaire(t_vec3 vec1, t_vec3 vec2);
 t_vec3	ft_normalize(t_vec3 vector);
 t_vec3	ft_cross(t_vec3 a, t_vec3 b);
 t_vec3	get_dir(t_vec3 origine, t_vec3 dest);
+float	get_dist(t_vec3 p1, t_vec3 p2);
 void	ft_init_random_seed(unsigned int *seed);
 float	ft_random_float(float min, float max, unsigned int *seed);
 t_rgb	ft_init_rgb(void);
 t_vec3	ft_vec3_add(t_vec3 v1, t_vec3 v2);
 t_vec3	ft_vec3_scale(t_vec3 v, float s);
+double	ft_vec3_len(t_vec3 v);
+t_vec3	ft_vec3_sub(t_vec3 v1, t_vec3 v2);
+t_vec3	ft_vec3_neg(t_vec3 v);
 t_rgba	ft_rgba_mult(t_rgba c1, t_rgba c2);
 t_rgba	ft_rgba_add(t_rgba c1, t_rgba c2);
+uint32_t ft_rgba_to_uint(t_rgba c);
+t_rgb rgba_to_rgb(t_rgba c);
+t_rgba rgb_to_rgba(t_rgb c);
+t_rgb ft_rgb_add(t_rgb a, t_rgb b);
+t_rgb rgb_mult_rgb(t_rgb a, t_rgb b);
+t_rgb rgb_add(t_rgb a, t_rgb b);
+t_bool	hit_world(t_ray *ray_wld, const t_scene *scene, t_hit_record *out);
+t_rgba	trace_path(t_ray ray, t_scene scene, int depth);
 #endif

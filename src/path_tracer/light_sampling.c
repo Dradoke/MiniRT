@@ -19,15 +19,17 @@ void	update_pool(t_pool pool, t_sample new_s, float new_w, unsigned int seed)
 /// @param lights 
 t_rgba	ft_flux_rgb_pl(t_point_light lights)
 {
-	const float k = 10.0;
-	t_rgba	e;
-	t_rgba	light_rgb;
-	
-	light_rgb = lights.color;
-	e.r = light_rgb.r * k;
-	e.g = light_rgb.g * k;
-	e.b = light_rgb.b * k;
-	return (e);
+    const float k = 10.0f; /* ou autre échelle souhaitée */
+    t_rgba	e;
+    float rf = (lights.color.r / 255.0f) * k;
+    float gf = (lights.color.g / 255.0f) * k;
+    float bf = (lights.color.b / 255.0f) * k;
+    /* clamp éventuel */
+    e.r = (uint8_t)(fminf(rf, 1.0f) * 255.0f);
+    e.g = (uint8_t)(fminf(gf, 1.0f) * 255.0f);
+    e.b = (uint8_t)(fminf(bf, 1.0f) * 255.0f);
+    e.a = 255;
+    return (e);
 }
 
 /// @brief Calculate the RGB Flux of a Directional Light (Sun, Ambiant Light)

@@ -13,9 +13,10 @@
 # include "MLX42.h"	// MinilibX
 # include "libft.h"			// LibFT
 
-# include "prototype.h"
 # include "struct.h"
+# include "prototype.h"
 # include "restir.h"
+# include "fterr.h"
 
 //••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
 #endif
