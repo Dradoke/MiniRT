@@ -13,13 +13,6 @@ static t_vec3	transform_ray_dir(t_vec3 dir, t_mat4 matrix)
 	return (res);
 }
 
-/**
- * @brief Effectue une rotation d'un vecteur en utilisant les angles d'Euler.
- * NOTE: Cette implémentation est basique. Pour des rotations complexes,
- * les quaternions ou les matrices de rotation sont plus robustes.
- * @param v Le vecteur à faire pivoter.
- * @param rotation Les angles de rotation (x, y, z) en radians.
- */
 static t_vec3	rotate_vector(t_vec3 v, t_vec3 rotation)
 {
 	t_vec3	rotated_v;
@@ -48,14 +41,6 @@ static t_vec3	rotate_vector(t_vec3 v, t_vec3 rotation)
 	return (rotated_v);
 }
 
-/**
- * @brief Lance un rayon dans la scène et détermine la couleur du pixel.
- * C'est le cœur de votre raytracer.
- *
- * @param ray Le rayon à lancer.
- * @param scene La scène contenant tous les objets.
- * @return La couleur (t_rgba) de ce que le rayon a touché.
- */
 static t_rgba	shoot_ray(t_ray *ray, t_scene *scene)
 {
 	t_rgba	color;
@@ -98,22 +83,12 @@ static void	perspective(t_data *data, t_ray *ray, uint32_t x, uint32_t y)
 	double	viewport_w;
 	t_vec3	pixel_dir;
 
-	// 1. Calculer les dimensions du plan de vue virtuel (viewport)
 	aspect_ratio = (double)data->mlx->width / (double)data->mlx->height;
 	viewport_h = 2.0 * tan(ft_degtorad(data->scene.cam.aov) / 2.0);
 	viewport_w = viewport_h * aspect_ratio;
-
-	// 2. Calculer la position du pixel sur ce plan de vue
-	// On convertit les coordonnées du pixel [0, width] en [-1, 1] et on met à l'échelle
 	pixel_dir.x = (2.0 * (x + 0.5) / data->mlx->width - 1.0) * viewport_w / 2.0;
 	pixel_dir.y = (1.0 - 2.0 * (y + 0.5) / data->mlx->height) * viewport_h / 2.0;
-	pixel_dir.z = -1.0; // Le plan est à une distance de -1 (convention)
-
-	// 3. Orienter le rayon selon la rotation de la caméra
-	// SUPPRIMÉ: La rotation est déjà appliquée par la matrice ci-dessous.
-	// pixel_dir = rotate_vector(pixel_dir, data->scene.cam.rotation);
-
-	// 4. Normaliser le vecteur direction et l'assigner au rayon
+	pixel_dir.z = -1.0;
 	ray->dir = vec3_normalize(transform_ray_dir(pixel_dir,
 				data->scene.cam.matrix[NORMAL]));
 }
@@ -124,20 +99,11 @@ static void	fisheye(t_data *data, t_ray *ray, uint32_t x, uint32_t y)
 	double	angle_h;
 	double	angle_v;
 
-	// 1. Calculer les angles de déviation par rapport au centre
 	angle_h = ft_degtorad((x - data->mlx->width / 2.0) * (data->scene.cam.aov / data->mlx->width));
 	angle_v = ft_degtorad((y - data->mlx->height / 2.0) * (data->scene.cam.aov / data->mlx->height));
-
-	// 2. Créer un vecteur de base pointant vers l'avant
 	pixel_dir = (t_vec3){{0, 0, -1}};
-
-	// 3. Appliquer les rotations pour ce pixel
 	pixel_dir = rotate_vector(pixel_dir, (t_vec3){{ft_degtorad((y - data->mlx->height / 2.0) * (data->scene.cam.aov / data->mlx->height)), ft_degtorad((x - data->mlx->width / 2.0) * (data->scene.cam.aov / data->mlx->width)), 0}});
-
-	// 4. Appliquer la rotation globale de la caméra
 	pixel_dir = rotate_vector(pixel_dir, data->scene.cam.rotation);
-
-	// 5. Normaliser et assigner (la rotation devrait préserver la norme si bien faite)
 	ray->dir = vec3_normalize(pixel_dir);
 }
 
@@ -157,16 +123,11 @@ t_bool	ft_render(t_data *data)
 		x = 0;
 		while (x < data->mlx->width)
 		{
-			// Choisir la fonction de projection en fonction du flag
 			if (data->flags[FISHEYE])
 				fisheye(data, &ray, x, y);
 			else
 				perspective(data, &ray, x, y);
-
-			// Lancer le rayon et obtenir la couleur
 			color = shoot_ray(&ray, &data->scene);
-
-			// Dessiner le pixel sur l'image
 			mlx_put_pixel(data->img, x, y, color.color);
 			x++;
 		}

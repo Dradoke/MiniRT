@@ -41,11 +41,16 @@ void	*safe_calloc(t_data *data, t_ui32 size);
 void	ft_clean_all(t_data	*data);
 void	ft_error(t_data *data, int error_code, char *error_message);
 // matrix.c
+void	mat4_look_at(t_mat4 *out, t_vec3 from, t_vec3 to, t_vec3 up_temp);
+// matrix2.c
 void	mat4_identity(t_mat4 *out);
 void	mat4_translation(t_mat4 *out, t_vec3 v);
 void	mat4_scaling(t_mat4 *out, t_vec3 v);
 void	mat4_multiply(t_mat4 *out, const t_mat4 a, const t_mat4 b);
-void	mat4_look_at(t_mat4 *out, t_vec3 from, t_vec3 to, t_vec3 up_temp);
+void	mat4_rotation_y(t_mat4 *out, t_f32 angle);
+void	mat4_rotation_axis(t_mat4 *out, t_vec3 axis, t_f32 angle);
+void	mat4_extract_position(t_vec3 *out, const t_mat4 m);
+void	mat4_set_position(t_mat4 *out, t_vec3 pos);
 // vector1.c
 t_vec3	vec3_new(t_f32 x, t_f32 y, t_f32 z);
 t_vec3	vec3_add(t_vec3 v1, t_vec3 v2);

@@ -8,7 +8,10 @@ static void	compute_transform_matrices(t_node *node, t_mat4 *trans_m,
 	t_f32	r;
 	t_f32	h;
 
-	trans_vec = node->u_data.sphere.location;
+	if (node->type == C)
+		trans_vec = node->u_data.cam.location;
+	else
+		trans_vec = node->u_data.sphere.location;
 	mat4_translation(trans_m, trans_vec);
 	mat4_identity(rot_m);
 	if (node->type == SP)
@@ -27,6 +30,22 @@ static void	compute_transform_matrices(t_node *node, t_mat4 *trans_m,
 	mat4_scaling(scale_m, scale_vec);
 }
 
+static void	get_rotation_matrix(t_node *node, t_mat4 *rot_m)
+{
+	t_vec3	dir;
+	t_mat4	rot_y;
+	t_mat4	rot_x;
+
+	mat4_identity(rot_m);
+	if (node->type == C)
+	{
+		dir = vec3_normalize(node->u_data.cam.rotation);
+		mat4_rotation_y(&rot_y, atan2(dir.x, dir.z));
+		mat4_rotation_axis(&rot_x, (t_vec3){{1, 0, 0}}, -asin(dir.y));
+		mat4_multiply(rot_m, rot_y, rot_x);
+	}
+}
+
 static void	build_transform(t_node *node, t_mat4 *out_transform,
 				t_mat4 *out_inv_transform)
 {
@@ -35,16 +54,22 @@ static void	build_transform(t_node *node, t_mat4 *out_transform,
 	t_mat4	scale_m;
 	t_mat4	inv_trans_m;
 	t_mat4	inv_scale_m;
+	t_vec3	loc;
 
 	compute_transform_matrices(node, &trans_m, &rot_m, &scale_m);
+	get_rotation_matrix(node, &rot_m);
+	if (node->type == C)
+		loc = node->u_data.cam.location;
+	else
+		loc = node->u_data.sphere.location;
 	mat4_translation(&inv_trans_m, (t_vec3){{
-			-node->u_data.sphere.location.x,
-			-node->u_data.sphere.location.y,
-			-node->u_data.sphere.location.z}});
+		-loc.x,
+		-loc.y,
+		-loc.z}});
 	mat4_scaling(&inv_scale_m, (t_vec3){{
-			1.0f / scale_m[0][0],
-			1.0f / scale_m[1][1],
-			1.0f / scale_m[2][2]}});
+		1.0f / scale_m[0][0],
+		1.0f / scale_m[1][1],
+		1.0f / scale_m[2][2]}});
 	mat4_multiply(out_transform, rot_m, scale_m);
 	mat4_multiply(out_transform, trans_m, *out_transform);
 	mat4_multiply(out_inv_transform, rot_m, inv_trans_m);
@@ -75,6 +100,7 @@ t_bool	ft_lst_to_arr(t_data *data)
 	t_list	*lst;
 	t_node	*node;
 	t_scene	*scene;
+	t_vec3	dir;
 
 	scene = &data->scene;
 	lst = data->parse_list;
@@ -90,7 +116,10 @@ t_bool	ft_lst_to_arr(t_data *data)
 			scene->cam = node->u_data.cam;
 			build_transform(node, &scene->cam.matrix[NORMAL],
 				&scene->cam.matrix[INVERTED]);
-
+			dir = vec3_normalize(node->u_data.cam.rotation);
+			scene->cam.rotation.x = -asin(dir.y);
+			scene->cam.rotation.y = atan2(dir.x, dir.z);
+			scene->cam.rotation.z = 0;
 		}
 		if (node->type == L)
 			add_light(node, scene);

@@ -50,6 +50,7 @@ RENDER			=	$(addprefix render/, \
 UTILS			=	$(addprefix utils/, \
 					ft_error.c \
 					matrix.c \
+					matrix2.c \
 					vector1.c \
 					vector2.c \
 					)

@@ -1,6 +1,6 @@
 #include "minirt.h"
 
-static void	ft_cursor_hook(double xpos, double ypos, void* param)
+static void	ft_cursor_hook(double xpos, double ypos, void *param)
 {
 	t_data	*data;
 
@@ -8,7 +8,7 @@ static void	ft_cursor_hook(double xpos, double ypos, void* param)
 	if (data->flags[RMB])
 	{
 		data->mouse_dx += xpos - data->last_pos[X];
-		data->mouse_dy += ypos - data->last_pos[Y];
+		data->mouse_dy -= ypos - data->last_pos[Y];
 	}
 	data->last_pos[X] = xpos;
 	data->last_pos[Y] = ypos;
