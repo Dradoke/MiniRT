@@ -8,8 +8,8 @@ static void	rebuild_matrix(t_data *data)
 	t_vec3	pos;
 
 	mat4_extract_position(&pos, data->scene.cam.matrix[NORMAL]);
-	mat4_rotation_y(&rot_y, data->scene.cam.rotation.y);
-	mat4_rotation_axis(&rot_x, (t_vec3){{1, 0, 0}}, data->scene.cam.rotation.x);
+	mat4_rotation_y(&rot_y, data->scene.cam.direction.y);
+	mat4_rotation_axis(&rot_x, (t_vec3){{1, 0, 0}}, data->scene.cam.direction.x);
 	mat4_multiply(&final, rot_y, rot_x);
 	mat4_set_position(&final, pos);
 	ft_memcpy(data->scene.cam.matrix[NORMAL], final, sizeof(t_mat4));
@@ -19,13 +19,13 @@ static void	apply_mouse_rotation(t_data *data)
 {
 	if (data->mouse_dx == 0 && data->mouse_dy == 0)
 		return ;
-	data->scene.cam.rotation.y -= data->mouse_dx * CAM_SENSI;
-	data->scene.cam.rotation.x += data->mouse_dy * CAM_SENSI;
-	data->scene.cam.rotation.z = 0;
-	if (data->scene.cam.rotation.x > 1.5)
-		data->scene.cam.rotation.x = 1.5;
-	if (data->scene.cam.rotation.x < -1.5)
-		data->scene.cam.rotation.x = -1.5;
+	data->scene.cam.direction.y -= data->mouse_dx * CAM_SENSI;
+	data->scene.cam.direction.x += data->mouse_dy * CAM_SENSI;
+	data->scene.cam.direction.z = 0;
+	if (data->scene.cam.direction.x > 1.5)
+		data->scene.cam.direction.x = 1.5;
+	if (data->scene.cam.direction.x < -1.5)
+		data->scene.cam.direction.x = -1.5;
 	rebuild_matrix(data);
 }
 
@@ -134,5 +134,4 @@ void	ft_cam_movement(t_data *data)
 	apply_translation(data, move);
 	data->mouse_dx = 0.0;
 	data->mouse_dy = 0.0;
-	data->flags[NEED_RENDER] = TRUE;
 }

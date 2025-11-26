@@ -39,7 +39,7 @@ static void	get_rotation_matrix(t_node *node, t_mat4 *rot_m)
 	mat4_identity(rot_m);
 	if (node->type == C)
 	{
-		dir = vec3_normalize(node->u_data.cam.rotation);
+		dir = vec3_normalize(node->u_data.cam.direction);
 		mat4_rotation_y(&rot_y, atan2(dir.x, dir.z));
 		mat4_rotation_axis(&rot_x, (t_vec3){{1, 0, 0}}, -asin(dir.y));
 		mat4_multiply(rot_m, rot_y, rot_x);
@@ -116,10 +116,10 @@ t_bool	ft_lst_to_arr(t_data *data)
 			scene->cam = node->u_data.cam;
 			build_transform(node, &scene->cam.matrix[NORMAL],
 				&scene->cam.matrix[INVERTED]);
-			dir = vec3_normalize(node->u_data.cam.rotation);
-			scene->cam.rotation.x = -asin(dir.y);
-			scene->cam.rotation.y = atan2(dir.x, dir.z);
-			scene->cam.rotation.z = 0;
+			dir = vec3_normalize(node->u_data.cam.direction);
+			scene->cam.direction.x = -asin(dir.y);
+			scene->cam.direction.y = atan2(dir.x, dir.z);
+			scene->cam.direction.z = 0;
 		}
 		if (node->type == L)
 			add_light(node, scene);

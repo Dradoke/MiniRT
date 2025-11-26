@@ -28,7 +28,7 @@ static t_bool	parse_plane(t_data *data, char **token)
 		return (FALSE);
 	node->type = PL;
 	if (!parse_vec3(token[1], &node->u_data.plane.location)
-		|| !parse_normal_vec3(token[2], &node->u_data.plane.rotation)
+		|| !parse_normal_vec3(token[2], &node->u_data.plane.direction)
 		|| !parse_color(token[3], &node->u_data.plane.color))
 	{
 		free(node);
@@ -47,7 +47,7 @@ static t_bool	parse_cylinder(t_data *data, char **token)
 		return (FALSE);
 	node->type = CY;
 	if (!parse_vec3(token[1], &node->u_data.cylinder.location)
-		|| !parse_normal_vec3(token[2], &node->u_data.cylinder.rotation)
+		|| !parse_normal_vec3(token[2], &node->u_data.cylinder.direction)
 		|| !parse_size(token[3], &node->u_data.cylinder.diameter)
 		|| !parse_size(token[4], &node->u_data.cylinder.height)
 		|| !parse_color(token[5], &node->u_data.cylinder.color))

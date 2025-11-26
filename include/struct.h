@@ -33,6 +33,8 @@ typedef enum e_flags
 	RMB,
 	FISHEYE,
 	NEED_RENDER,
+	IS_RENDERING,
+	MOVED,
 	FLAG_COUNT,
 }	t_flags;
 
@@ -107,7 +109,7 @@ typedef struct s_cam
 	t_mat4	matrix[2];
 	t_ui8	mode;
 	t_vec3	location;
-	t_vec3	rotation;
+	t_vec3	direction;
 	t_ui8	aov;
 }	t_cam;
 
@@ -138,14 +140,14 @@ typedef struct s_sphere
 typedef struct s_plane
 {
 	t_vec3	location;
-	t_vec3	rotation;
+	t_vec3	direction;
 	t_rgba	color;
 }	t_plane;
 
 typedef struct s_cylinder
 {
 	t_vec3			location;
-	t_vec3			rotation;
+	t_vec3			direction;
 	t_f32			diameter;
 	t_f32			height;
 	t_rgba			color;
@@ -212,6 +214,8 @@ typedef struct s_data
 	t_f64		mouse_dx;
 	t_f64		mouse_dy;
 	t_f64		last_resize_time;
+	t_i32		screen[2];
+	t_ui16		block_size;
 }	t_data;
 
 //••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••

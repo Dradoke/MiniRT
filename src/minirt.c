@@ -22,9 +22,7 @@ int	main(int ac, char **av)
 	if (!ft_parser(data, av[1]))
 		ft_error(data, EXIT_FAILURE, FTERR_PARSE);
 	// see_data(data);
-	ft_printfd(STDOUT_FILENO, "\n%f\n", ft_atof("-2.2"));
 	ft_mlx_init(data);
-	ft_render(data);
 	ft_hooks(data);
 	mlx_loop(data->mlx);
 	return (ft_clean_all(data), EXIT_SUCCESS);
