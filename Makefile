@@ -32,6 +32,7 @@ PATH_TRACER		=	$(addprefix path_tracer/, \
 					hit_cylinder_utils.c \
 					hit_cylinder_utils2.c \
 					hit_meshes.c \
+					hit_triangle_utils.c \
 					hit_world.c \
 					ft_vec3_utils2.c \
 					pt_utils.c \

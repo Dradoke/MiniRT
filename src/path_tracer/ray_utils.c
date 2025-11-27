@@ -1,10 +1,19 @@
 #include "minirt.h"
 
+/// @brief Calculates the point on a ray at distance t
+/// @param r The ray
+/// @param t The distance parameter
+/// @return The point coordinates
 t_vec3	ft_ray_at(t_ray r, double t)
 {
 	return (ft_vec3_add(r.origin, ft_vec3_scale(r.dir, t)));
 }
 
+/// @brief Multiplies a 4x4 matrix by a 3D vector
+/// @param m The matrix
+/// @param v The vector
+/// @param w The w component (1 for points, 0 for vectors)
+/// @return The transformed vector
 t_vec3	mat4_mul_vec3(t_mat4 m, t_vec3 v, double w)
 {
 	t_vec3	out;
@@ -15,6 +24,10 @@ t_vec3	mat4_mul_vec3(t_mat4 m, t_vec3 v, double w)
 	return (out);
 }
 
+/// @brief Transforms a ray from world space to local object space
+/// @param r The ray in world space
+/// @param inv The inverse transformation matrix of the object
+/// @return The ray in local space
 t_ray	transform_ray_world_to_local(t_ray r, t_mat4 inv)
 {
 	t_ray	out;

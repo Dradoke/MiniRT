@@ -1,6 +1,10 @@
 #include "minirt.h"
 
-//extraction de la détection de collision selon le type
+/// @brief Dispatches the intersection test to the specific object type
+/// @param tmp_hit Pointer to store temporary hit record
+/// @param obj The mesh object to test
+/// @param ray_wld The ray in world space
+/// @return TRUE if hit, FALSE otherwise
 static t_bool	hit_object(t_hit_record *tmp_hit, t_mesh *obj, t_ray ray_wld)
 {
 	t_bool	hit;
@@ -17,7 +21,10 @@ static t_bool	hit_object(t_hit_record *tmp_hit, t_mesh *obj, t_ray ray_wld)
 	return (hit);
 }
 
-//extraction de l'assignation de couleur
+/// @brief Extracts the color from the specific object
+/// type and assigns it to the hit record
+/// @param out Pointer to the hit record
+/// @param obj The mesh object
 static void	set_hit_color(t_hit_record *out, t_mesh *obj)
 {
 	if (obj->type == SP)
@@ -28,11 +35,14 @@ static void	set_hit_color(t_hit_record *out, t_mesh *obj)
 		out->color = obj->u_data.cylinder.color;
 	else if (obj->type == TR)
 		out->color = obj->u_data.triangle.color;
-	// else
-    //     out->color = (t_rgba){{255, 0, 255, 255}};
 }
 
-//extraction de la mise à jour du hit le plus proche
+/// @brief Updates the closest hit record if the new hit is closer
+/// @param tmp_hit The temporary hit record to check
+/// @param out The final hit record to update
+/// @param best_t Pointer to the closest distance found so far
+/// @param obj The object that was hit
+/// @return TRUE if the hit was updated, FALSE otherwise
 static t_bool	update_closest_hit(t_hit_record *tmp_hit, t_hit_record *out,
 	double *best_t, t_mesh *obj)
 {
@@ -46,6 +56,12 @@ static t_bool	update_closest_hit(t_hit_record *tmp_hit, t_hit_record *out,
 	return (FALSE);
 }
 
+/// @brief Iterates through all objects in the
+/// scene to find the closest intersection
+/// @param ray_wld The ray in world space
+/// @param scene The scene containing objects
+/// @param out Pointer to store the hit record of the closest object
+/// @return TRUE if an object was hit, FALSE otherwise
 t_bool	hit_world(t_ray *ray_wld, const t_scene *scene, t_hit_record *out)
 {
 	double			best_t;

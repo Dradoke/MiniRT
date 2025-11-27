@@ -1,5 +1,8 @@
 #include "minirt.h"
 
+/// @brief Applies brightness to the light's base color
+/// @param light The point light source
+/// @return The adjusted light color
 t_rgb	get_light_color(t_point_light light)
 {
 	t_rgb	color;
@@ -10,6 +13,11 @@ t_rgb	get_light_color(t_point_light light)
 	return (color);
 }
 
+/// @brief Checks if a light source is visible from a hit point (Shadow ray)
+/// @param hit The hit point
+/// @param scene The scene
+/// @param i Index of the light
+/// @return 1 if visible, 0 if occluded
 int	is_light_visible(t_hit_record hit, t_scene scene, int i)
 {
 	t_ray			shadow_ray;
@@ -27,6 +35,12 @@ int	is_light_visible(t_hit_record hit, t_scene scene, int i)
 	return (0);
 }
 
+/// @brief Calculates the diffuse contribution of a single light
+/// @param hit The hit point
+/// @param scene The scene
+/// @param i Index of the light
+/// @param albedo The surface color
+/// @return The calculated color contribution
 t_rgb	calc_light_contrib(t_hit_record hit, t_scene scene, int i,
 	t_rgb albedo)
 {
@@ -46,6 +60,11 @@ t_rgb	calc_light_contrib(t_hit_record hit, t_scene scene, int i,
 	return (contrib);
 }
 
+/// @brief Adds the ambient light contribution to the accumulated color
+/// @param acc The accumulated color so far
+/// @param scene The scene containing ambient light settings
+/// @param albedo The surface color
+/// @return The new accumulated color
 t_rgb	add_ambient(t_rgb acc, t_scene scene, t_rgb albedo)
 {
 	t_rgb	ambient;
@@ -59,6 +78,9 @@ t_rgb	add_ambient(t_rgb acc, t_scene scene, t_rgb albedo)
 	return (acc);
 }
 
+/// @brief Converts a float RGB color to a clamped byte RGBA color
+/// @param color The float RGB color
+/// @return The clamped RGBA color
 t_rgba	rgb_to_rgba_clamped(t_rgb color)
 {
 	t_rgba	out;

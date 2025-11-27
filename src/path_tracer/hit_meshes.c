@@ -1,6 +1,11 @@
 #include "minirt.h"
 #include <math.h>
 
+/// @brief Checks for intersection between a ray and a sphere
+/// @param hit Pointer to store hit record
+/// @param sphere The sphere object
+/// @param ray The ray
+/// @return TRUE if hit, FALSE otherwise
 t_bool	hit_sphere(t_hit_record *hit, t_sphere sphere, t_ray ray)
 {
 	t_hit_sp_data	data;
@@ -27,6 +32,11 @@ t_bool	hit_sphere(t_hit_record *hit, t_sphere sphere, t_ray ray)
 	return (TRUE);
 }
 
+/// @brief Checks for intersection between a ray and a plane
+/// @param hit Pointer to store hit record
+/// @param plane The plane object
+/// @param ray The ray
+/// @return TRUE if hit, FALSE otherwise
 t_bool	hit_plane(t_hit_record *hit, t_plane plane, t_ray ray)
 {
 	double	denom;
@@ -49,6 +59,11 @@ t_bool	hit_plane(t_hit_record *hit, t_plane plane, t_ray ray)
 	return (TRUE);
 }
 
+/// @brief Checks for intersection between a ray and a cylinder
+/// @param hit Pointer to store hit record
+/// @param obj The mesh object containing the cylinder
+/// @param ray The ray
+/// @return TRUE if hit, FALSE otherwise
 t_bool	hit_cylinder(t_hit_record *hit, t_mesh obj, t_ray ray)
 {
 	t_cylinder	cyl;
@@ -62,67 +77,24 @@ t_bool	hit_cylinder(t_hit_record *hit, t_mesh obj, t_ray ray)
 	return (hit->t != INFINITY);
 }
 
-t_bool  hit_triangle(t_hit_record *hit, t_triangle triangle, t_ray ray)
+/// @brief Checks for intersection between a ray and a triangle
+/// @brief Uses the Möller–Trumbore intersection algorithm helper
+/// @param hit Pointer to store hit record
+/// @param triangle The triangle object
+/// @param ray The ray
+/// @return TRUE if hit, FALSE otherwise
+t_bool	hit_triangle(t_hit_record *hit, t_triangle triangle, t_ray ray)
 {
-    t_vec3  e1;
-    t_vec3  e2;
-    t_vec3  p_vec;
-    t_vec3  t_vec;
-    t_vec3  q_vec;
-    double  det;
-    double  inv_det;
-    double  t;
-    double  u;
-    double  v;
+	t_tri_vars	v;
+	t_vec3		normal;
 
-    e1 = ft_vec3_sub(triangle.vertex2, triangle.vertex1);
-    e2 = ft_vec3_sub(triangle.vertex3, triangle.vertex1);
-
-    p_vec = ft_cross(ray.dir, e2);
-    det = ft_vec3_dot(e1, p_vec);
-
-    /* CORRECTION 1 : Culling (Optionnel mais recommandé) */
-    /* Si det est proche de 0, le rayon est parallèle au triangle */
-    if (fabs(det) < EPS)
-        return (FALSE);
-
-    inv_det = 1.0 / det;
-
-    t_vec = ft_vec3_sub(ray.origin, triangle.vertex1);
-    u = ft_vec3_dot(t_vec, p_vec) * inv_det;
-
-    if (u < 0.0 || u > 1.0)
-        return (FALSE);
-
-    q_vec = ft_cross(t_vec, e1);
-    v = ft_vec3_dot(ray.dir, q_vec) * inv_det;
-
-    if (v < 0.0 || (u + v) > 1.0)
-        return (FALSE);
-
-    t = ft_vec3_dot(e2, q_vec) * inv_det;
-
-    /* CORRECTION 2 : Vérification stricte de la distance */
-    /* On ne modifie hit->t QUE si on est sûr d'avoir trouvé mieux */
-    /* Et on ne compare pas avec hit->t ici car hit->t n'est pas fiable à ce stade */
-    /* On vérifie juste que t est devant la caméra */
-    
-    if (t > EPS)
-    {
-        hit->t = t;
-        hit->p = ft_ray_at(ray, hit->t);
-        
-        /* Calcul de la normale */
-        /* Attention : l'ordre du produit vectoriel dépend de l'ordre des sommets (Main Droite) */
-        /* E1 x E2 ou E2 x E1 ? Standard : (V2-V1) x (V3-V1) = E1 x E2 */
-        hit->n = ft_normalize(ft_cross(e1, e2)); 
-        
-        /* Face Culling / Orientation de la normale */
-        if (ft_vec3_dot(ray.dir, hit->n) > 0)
-            hit->n = ft_vec3_neg(hit->n);
-            
-        return (TRUE);
-    }
-
-    return (FALSE);
+	if (!moller_trumbore(triangle, ray, &v))
+		return (FALSE);
+	if (v.t > EPS)
+	{
+		normal = ft_cross(v.e1, v.e2);
+		compute_hit_data(hit, ray, v.t, normal);
+		return (TRUE);
+	}
+	return (FALSE);
 }

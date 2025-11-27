@@ -25,16 +25,30 @@ t_vec3	ft_vec3_scale(t_vec3 v, float s)
 	return ((t_vec3){{v.x * s, v.y * s, v.z * s}});
 }
 
+/// @brief Calculates the sum of two vectors
+/// @brief by adding their corresponding components
+/// @param v1 The first vector
+/// @param v2 The second vector
+/// @return A new vector resulting from (v1 + v2)
 t_vec3	ft_vec3_add(t_vec3 v1, t_vec3 v2)
 {
 	return ((t_vec3){{v1.x + v2.x, v1.y + v2.y, v1.z + v2.z}});
 }
 
+/// @brief Calculates the difference between two vectors
+/// @brief by subtracting the second vector from the first
+/// @param v1 The vector to subtract from
+/// @param v2 The vector to subtract
+/// @return A new vector resulting from (v1 - v2)
 t_vec3	ft_vec3_sub(t_vec3 v1, t_vec3 v2)
 {
 	return ((t_vec3){{v1.x - v2.x, v1.y - v2.y, v1.z - v2.z}});
 }
 
+/// @brief Multiplies each component of a vector by a scalar value
+/// @param v The vector to multiply
+/// @param s The scalar value
+/// @return A new vector resulting from (v * s)
 t_vec3	ft_vec3_mul(t_vec3 v, float s)
 {
 	t_vec3	r;

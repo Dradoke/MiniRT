@@ -16,6 +16,12 @@ static void	trace_path_utils2(t_path_tracing *data)
 	(*data).out_light = rgb_add((*data).direct_light, (*data).indirect_light);
 }
 
+/// @brief Recursive path tracing function
+/// @brief Calculates global illumination using Monte Carlo integration
+/// @param ray The current ray
+/// @param scene The scene description
+/// @param depth Recursion depth limit
+/// @return The calculated color for the ray
 t_rgba	path_trace(t_ray ray, t_scene scene, int depth)
 {
 	t_path_tracing	data;
@@ -44,6 +50,12 @@ t_rgba	path_trace(t_ray ray, t_scene scene, int depth)
 	return (rgb_to_rgba(data.out_light));
 }
 
+/// @brief Simple ray tracing function (Direct illumination only)
+/// @param ray The current ray
+/// @param scene The scene description
+/// @param depth Recursion depth limit (unused
+/// for direct light but kept for signature)
+/// @return The calculated color
 t_rgba	ray_trace(t_ray ray, t_scene scene, int depth)
 {
 	t_path_tracing	data;
@@ -57,6 +69,13 @@ t_rgba	ray_trace(t_ray ray, t_scene scene, int depth)
 	return (direct);
 }
 
+/// @brief Main ray tracing entry point,
+/// dispatches to specific tracer based on flags
+/// @param ray The camera ray
+/// @param scene The scene description
+/// @param depth Maximum recursion depth
+/// @param flags Rendering flags (e.g., REFLECT)
+/// @return The final pixel color
 t_rgba	trace_ray(t_ray ray, t_scene scene, int depth, t_bool *flags)
 {
 	if (flags[REFLECT] == TRUE)

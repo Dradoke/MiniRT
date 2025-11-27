@@ -2,8 +2,8 @@
 # define MINIRT_H
 //••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
 
-# define WIDTH 720
-# define HEIGHT 800
+# define WIDTH 1000
+# define HEIGHT 1000
 
 # define CAM_SENSI 0.01
 # define MOVE_SPEED 1.0

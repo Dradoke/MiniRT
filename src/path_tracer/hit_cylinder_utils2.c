@@ -1,5 +1,11 @@
 #include "minirt.h"
 
+/// @brief Solves the quadratic equation for the infinite cylinder body
+/// @brief and checks for valid intersections
+/// @param hit Pointer to hit record
+/// @param v Pointer to cylinder variables
+/// @param cyl The cylinder object
+/// @param ray The ray
 void	hit_cylinder_body(t_hit_record *hit, t_cyl_vars *v,
 	t_cylinder cyl, t_ray ray)
 {
@@ -24,6 +30,11 @@ void	hit_cylinder_body(t_hit_record *hit, t_cyl_vars *v,
 	}
 }
 
+/// @brief Calculates the center point of a cylinder cap
+/// @param cyl The cylinder object
+/// @param axis The cylinder axis
+/// @param sign Direction (+1 for top, -1 for bottom)
+/// @return The center of the cap
 t_vec3	get_cap_center(t_cylinder cyl, t_vec3 axis, double sign)
 {
 	t_vec3	cap_center;
@@ -36,6 +47,10 @@ t_vec3	get_cap_center(t_cylinder cyl, t_vec3 axis, double sign)
 	return (cap_center);
 }
 
+/// @brief Sets the normal for a hit on a cylinder cap
+/// @param hit Pointer to hit record
+/// @param axis The cylinder axis
+/// @param sign Direction (+1 for top, -1 for bottom)
 void	set_cap_normal(t_hit_record *hit, t_vec3 axis, double sign)
 {
 	if (sign > 0)
@@ -44,6 +59,12 @@ void	set_cap_normal(t_hit_record *hit, t_vec3 axis, double sign)
 		hit->n = (t_vec3){{-axis.x, -axis.y, -axis.z}};
 }
 
+/// @brief Checks for intersection with a specific cylinder cap
+/// @param hit Pointer to hit record
+/// @param v Cylinder variables
+/// @param cyl The cylinder object
+/// @param ray The ray
+/// @return TRUE if hit, FALSE otherwise
 t_bool	check_cap_hit(t_hit_record *hit, t_cyl_vars v,
 	t_cylinder cyl, t_ray ray)
 {
@@ -69,6 +90,11 @@ t_bool	check_cap_hit(t_hit_record *hit, t_cyl_vars v,
 	return (FALSE);
 }
 
+/// @brief Checks for intersections with both cylinder caps
+/// @param hit Pointer to hit record
+/// @param v Pointer to cylinder variables
+/// @param cyl The cylinder object
+/// @param ray The ray
 void	hit_cylinder_caps(t_hit_record *hit, t_cyl_vars *v,
 	t_cylinder cyl, t_ray ray)
 {

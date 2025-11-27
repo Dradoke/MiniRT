@@ -1,5 +1,9 @@
 #include "minirt.h"
 
+/// @brief Adds two RGBA colors component-wise and clamps the result
+/// @param c1 First color
+/// @param c2 Second color
+/// @return The sum of the colors
 t_rgba	ft_rgba_add(t_rgba c1, t_rgba c2)
 {
 	float	r;
@@ -35,6 +39,10 @@ static uint32_t	pack_rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
 		| ((uint32_t)b << 8) | ((uint32_t)a));
 }
 
+/// @brief Converts an RGBA structure to a packed 32-bit integer
+/// @brief Handles normalization and clamping if necessary
+/// @param c The RGBA color structure
+/// @return The packed 32-bit integer (0xRRGGBBAA)
 uint32_t	ft_rgba_to_uint(t_rgba c)
 {
 	float	rf;

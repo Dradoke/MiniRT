@@ -1,5 +1,10 @@
 #include "minirt.h"
 
+/// @brief Calculates the direct lighting contribution for a hit point
+/// @brief Iterates over all lights in the scene
+/// @param hit The hit record containing position and normal
+/// @param scene The scene containing lights and objects
+/// @return The accumulated color from direct lighting
 t_rgba	ft_calc_direct_light(t_hit_record hit, t_scene scene)
 {
 	int		i;

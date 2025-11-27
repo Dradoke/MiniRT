@@ -1,5 +1,8 @@
 #include "minirt.h"
 
+/// @brief Converts RGBA (0-255) to RGB float (0.0-1.0)
+/// @param c The RGBA color
+/// @return The RGB float color
 t_rgb	rgba_to_rgb(t_rgba c)
 {
 	t_rgb	out;
@@ -10,6 +13,9 @@ t_rgb	rgba_to_rgb(t_rgba c)
 	return (out);
 }
 
+/// @brief Converts RGB float (0.0-1.0) to RGBA (0-255)
+/// @param c The RGB float color
+/// @return The RGBA color
 t_rgba	rgb_to_rgba(t_rgb c)
 {
 	t_rgba	out;
@@ -21,6 +27,10 @@ t_rgba	rgb_to_rgba(t_rgb c)
 	return (out);
 }
 
+/// @brief Multiplies two RGB float colors component-wise
+/// @param a First color
+/// @param b Second color
+/// @return The product of the colors
 t_rgb	rgb_mult_rgb(t_rgb a, t_rgb b)
 {
 	t_rgb	r;
@@ -31,6 +41,10 @@ t_rgb	rgb_mult_rgb(t_rgb a, t_rgb b)
 	return (r);
 }
 
+/// @brief Adds two RGB float colors component-wise
+/// @param a First color
+/// @param b Second color
+/// @return The sum of the colors
 t_rgb	rgb_add(t_rgb a, t_rgb b)
 {
 	t_rgb	r;
@@ -41,6 +55,10 @@ t_rgb	rgb_add(t_rgb a, t_rgb b)
 	return (r);
 }
 
+/// @brief Multiplies two RGBA colors by converting to float and back
+/// @param c1 First color
+/// @param c2 Second color
+/// @return The product of the colors
 t_rgba	ft_rgba_mult(t_rgba c1, t_rgba c2)
 {
 	t_rgb	a;

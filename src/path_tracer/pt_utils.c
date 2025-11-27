@@ -21,6 +21,11 @@ void	ft_init_random_seed(unsigned int *seed)
 	close(fd);
 }
 
+/// @brief Generates a random float between min and max using a seed
+/// @param min Minimum value
+/// @param max Maximum value
+/// @param seed Pointer to the random seed
+/// @return Random float value
 float	ft_random_float(float min, float max, unsigned int *seed)
 {
 	float	normalized;

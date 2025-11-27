@@ -20,6 +20,12 @@ t_vec3	get_local_dir(unsigned int *seed)
 	return (d_local);
 }
 
+/// @brief Transforms a direction from local tangent space to world space
+/// @param u Tangent vector
+/// @param v Bitangent vector
+/// @param w Normal vector
+/// @param d_local Direction in local space
+/// @return Direction in world space
 t_vec3	get_world_dir(t_vec3 u, t_vec3 v, t_vec3 w, t_vec3 d_local)
 {
 	t_vec3	term1;
@@ -34,6 +40,10 @@ t_vec3	get_world_dir(t_vec3 u, t_vec3 v, t_vec3 w, t_vec3 d_local)
 	return (ft_normalize(direction_unnormalized));
 }
 
+/// @brief Generates a random direction in the hemisphere oriented by the normal
+/// @param hit The hit record containing the normal
+/// @param d_local Random direction in local space
+/// @return Random direction in world space
 t_vec3	get_rand_dir(t_hit_record hit, t_vec3 d_local)
 {
 	t_vec3	w;
@@ -53,6 +63,10 @@ t_vec3	get_rand_dir(t_hit_record hit, t_vec3 d_local)
 	return (d_new);
 }
 
+/// @brief Creates a rebound ray slightly offset from the surface to avoid acne
+/// @param d_new The new ray direction
+/// @param hit The hit record containing the origin
+/// @return The new ray
 t_ray	ft_create_reb_ray(t_vec3 d_new, t_hit_record hit)
 {
 	t_vec3	origine_rebound;
@@ -61,6 +75,9 @@ t_ray	ft_create_reb_ray(t_vec3 d_new, t_hit_record hit)
 	return ((t_ray){origine_rebound, d_new});
 }
 
+/// @brief Converts RGBA color (0-255) to RGB float (0.0-1.0)
+/// @param color The RGBA color
+/// @return The RGB float color
 t_rgb	get_albedo(t_rgba color)
 {
 	t_rgb	albedo;
