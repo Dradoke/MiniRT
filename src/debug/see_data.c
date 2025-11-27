@@ -205,8 +205,6 @@ static void	see_mesh(t_mesh *mesh, int indent, int idx)
 		printf("  ");
 	printf("%s[MESH #%d - %s]%s @%p\n", BOLD BLUE, idx,
 		get_type_name(mesh->type), RESET, (void *)mesh);
-	see_mat4(mesh->matrix[NORMAL], "Transform", indent + 1);
-	see_mat4(mesh->matrix[INVERTED], "Inv Transform", indent + 1);
 	see_mesh_data(mesh, indent + 1);
 }
 

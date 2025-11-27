@@ -165,7 +165,6 @@ typedef struct s_triangle
 typedef struct s_mesh
 {
 	t_type	type;
-	t_mat4	matrix[2];
 	union
 	{
 		t_sphere	sphere;

@@ -90,8 +90,6 @@ static void	add_mesh(t_node *node, t_scene *scene)
 	scene->mesh[i].type = node->type;
 	ft_memcpy(&scene->mesh[i].u_data, &node->u_data,
 		sizeof(scene->mesh[i].u_data));
-	build_transform(node, &scene->mesh[i].matrix[NORMAL],
-		&scene->mesh[i].matrix[INVERTED]);
 	i++;
 }
 
