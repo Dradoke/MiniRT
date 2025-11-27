@@ -21,7 +21,7 @@ static t_bool	ft_has_movement(t_data *data)
 		|| data->keys[FTKEY_A] || data->keys[FTKEY_D]);
 }
 
-static void	ft_render_pass(t_data *data, t_ui16 block_size)
+void	ft_render_pass(t_data *data, t_ui16 block_size)
 {
 	if (!mlx_resize_image(data->img, data->mlx->width, data->mlx->height))
 		return ;
@@ -56,7 +56,6 @@ static void	ft_loop_hook(void *param)
 
 void	ft_hooks(t_data *data)
 {
-	data->flags[NEED_RENDER] = TRUE;
 	mlx_mouse_hook(data->mlx, &ft_mouse_hook, data);
 	mlx_cursor_hook(data->mlx, &ft_cursor_hook, data);
 	mlx_key_hook(data->mlx, &ft_key_hook, data);

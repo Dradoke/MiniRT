@@ -80,7 +80,7 @@ static char	*get_cam_mode_name(t_ui8 mode)
 	return ("UNKNOWN");
 }
 
-static void	see_camera(t_cam *cam, int indent)
+void	see_camera(t_cam *cam, int indent)
 {
 	int	i;
 

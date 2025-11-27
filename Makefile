@@ -5,7 +5,7 @@ NAME			=	minirt
 
 # Compiler Setting
 CC				=	cc
-CFLAG			=	-Wall -Wextra -Werror -g3
+CFLAG			=	-Wall -Wextra -Werror -g3 -O3 -march=native -ffast-math
 
 # Directory
 INC_DIR			=	include/
@@ -52,11 +52,14 @@ DEBUG			=	$(addprefix debug/, \
 
 HOOKS			=	$(addprefix hooks/, \
 					hooks.c \
+					keys.c \
+					mouse.c \
 					)
 
 PARSER			=	$(addprefix parser/, \
 					ft_lst_to_arr.c \
 					ft_parser.c \
+					ft_transform_utils.c \
 					parse_mesh.c \
 					parse_unique.c \
 					parse_value_1.c \
@@ -64,7 +67,9 @@ PARSER			=	$(addprefix parser/, \
 					)
 
 RENDER			=	$(addprefix render/, \
+					cam_utils.c \
 					cam.c \
+					projection.c \
 					render.c \
 					)
 
@@ -72,6 +77,7 @@ UTILS			=	$(addprefix utils/, \
 					ft_error.c \
 					matrix.c \
 					matrix2.c \
+					matrix3.c \
 					vector1.c \
 					vector2.c \
 					)

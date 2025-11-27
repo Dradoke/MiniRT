@@ -7,12 +7,15 @@
 //•••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••debug
 // see_data.c
 void	see_data(t_data *data);
+void	see_camera(t_cam *cam, int indent);
 
 //•••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••hooks
 // hooks.c
+void	ft_render_pass(t_data *data, t_ui16 block_size);
 void	ft_hooks(t_data *data);
 // keys.c
 void	ft_key_hook(mlx_key_data_t keydata, void *param);
+void	ft_cursor_hook(double xpos, double ypos, void *param);
 // mouse.c
 void	ft_mouse_hook(mouse_key_t button, action_t action,
 			modifier_key_t mods, void *param);
@@ -20,6 +23,9 @@ void	ft_mouse_hook(mouse_key_t button, action_t action,
 //••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••parser
 // ft_lst_to_arr.c
 t_bool	ft_lst_to_arr(t_data *data);
+// ft_transform_utils.c
+void	build_transform(t_node *node, t_mat4 *out_transform,
+			t_mat4 *out_inv_transform);
 // ft_parser.c
 t_bool	ft_parser(t_data *data, char *filename);
 // parse_mesh.c
@@ -36,8 +42,18 @@ t_bool	parse_vec3(char *str, t_vec3 *vec3);
 t_bool	parse_normal_vec3(char *str, t_vec3 *vec3);
 
 //••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••render
+// cam_utils.c
+void	rebuild_matrix(t_data *data);
+t_vec3	get_standing_movement(t_data *data);
+t_vec3	get_plane_movement(t_data *data);
+void	apply_roll_rotation(t_data *data);
+void	apply_translation(t_data *data, t_vec3 move);
 // cam.c
 void	ft_cam_movement(t_data *data);
+void	apply_plane_rotation(t_data *data, t_vec3 axis, t_f32 angle);
+// projection.c
+void	fisheye(t_data *data, t_ray *ray, uint32_t x, uint32_t y);
+void	perspective(t_data *data, t_ray *ray, uint32_t x, uint32_t y);
 // render.c
 t_bool	ft_render(t_data *data);
 

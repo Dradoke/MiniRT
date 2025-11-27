@@ -21,8 +21,9 @@ int	main(int ac, char **av)
 		ft_error(data, EXIT_FAILURE, FTERR_ALLOC);
 	if (!ft_parser(data, av[1]))
 		ft_error(data, EXIT_FAILURE, FTERR_PARSE);
-	// see_data(data);
 	ft_mlx_init(data);
+	ft_render_pass(data, 1);
+	data->flags[NEED_RENDER] = FALSE;
 	ft_hooks(data);
 	mlx_loop(data->mlx);
 	return (ft_clean_all(data), EXIT_SUCCESS);
