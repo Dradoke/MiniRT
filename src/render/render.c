@@ -92,8 +92,8 @@ t_bool	ft_render(t_data *data)
 				fisheye(data, &ray, x, y);
 			else
 				perspective(data, &ray, x, y);
-			color = ray_trace(ray, data->scene, MAX_DEPTH);
-			mlx_put_pixel(data->img, x, y, color.color);
+			color = trace_ray(ray, data->scene, MAX_DEPTH, data->flags);
+			mlx_put_pixel(data->img, x, y, ft_rgba_to_uint(color));
 			x++;
 		}
 		y++;

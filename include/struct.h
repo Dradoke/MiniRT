@@ -33,6 +33,7 @@ typedef enum e_flags
 	RMB,
 	FISHEYE,
 	NEED_RENDER,
+	REFLECT,
 	FLAG_COUNT,
 }	t_flags;
 

@@ -23,8 +23,28 @@ SRC				=	$(addprefix src/, \
 					$(PARSER) \
 					$(RENDER) \
 					$(UTILS) \
-					path_tracer/simple_tracer/st.c \
-					path_tracer/restir_utils.c \
+					$(PATH_TRACER) \
+					)
+
+PATH_TRACER		=	$(addprefix path_tracer/, \
+					$(SIMPLE_TRACER) \
+					ft_vec3_utils1.c \
+					hit_cylinder_utils.c \
+					hit_cylinder_utils2.c \
+					hit_meshes.c \
+					hit_world.c \
+					ft_vec3_utils2.c \
+					pt_utils.c \
+					ray_utils.c \
+					rgba_utils.c \
+					rgba_utils2.c \
+					)
+
+SIMPLE_TRACER	=	$(addprefix simple_tracer/, \
+					st_utils.c \
+					st_utils2.c \
+					st_utils3.c \
+					st.c \
 					)
 
 DEBUG			=	$(addprefix debug/, \
