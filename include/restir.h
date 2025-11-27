@@ -138,27 +138,7 @@ typedef struct s_tri_vars
 	double	v;
 }	t_tri_vars;
 
-float		ft_get_scalaire(t_vec3 vec1, t_vec3 vec2);
-t_vec3		ft_normalize(t_vec3 vector);
-t_vec3		ft_cross(t_vec3 a, t_vec3 b);
-t_vec3		get_dir(t_vec3 origine, t_vec3 dest);
-float		get_dist(t_vec3 p1, t_vec3 p2);
-void		ft_init_random_seed(unsigned int *seed);
-float		ft_random_float(float min, float max, unsigned int *seed);
-t_vec3		ft_vec3_add(t_vec3 v1, t_vec3 v2);
-t_vec3		ft_vec3_scale(t_vec3 v, float s);
-double		ft_vec3_len(t_vec3 v);
-t_vec3		ft_vec3_sub(t_vec3 v1, t_vec3 v2);
-t_vec3		ft_vec3_neg(t_vec3 v);
-t_rgba		ft_rgba_mult(t_rgba c1, t_rgba c2);
-t_rgba		ft_rgba_add(t_rgba c1, t_rgba c2);
-uint32_t	ft_rgba_to_uint(t_rgba c);
-t_rgb		rgba_to_rgb(t_rgba c);
-t_rgba		rgb_to_rgba(t_rgb c);
-t_rgb		rgb_mult_rgb(t_rgb a, t_rgb b);
-t_rgb		rgb_add(t_rgb a, t_rgb b);
-t_bool		hit_world(t_ray *ray_wld, const t_scene *scene, t_hit_record *out);
-
+//••••••••••••••••••••••••••••••••••••••••••••••••••••path_tracer/simple_tracer
 // st_utils.c
 t_vec3		get_local_dir(unsigned int *seed);
 t_vec3		get_world_dir(t_vec3 u, t_vec3 v, t_vec3 w, t_vec3 d_local);
@@ -178,6 +158,7 @@ t_rgba		ft_calc_direct_light(t_hit_record hit, t_scene scene);
 t_rgba		path_trace(t_ray ray, t_scene scene, int depth);
 t_rgba		ray_trace(t_ray ray, t_scene scene, int depth);
 t_rgba		trace_ray(t_ray ray, t_scene scene, int depth, t_bool *flags);
+//•••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••path_tracer
 // ft_vec3_utils1.c
 t_vec3		ft_cross(t_vec3 a, t_vec3 b);
 t_vec3		ft_vec3_scale(t_vec3 v, float s);
@@ -221,18 +202,12 @@ t_bool		moller_trumbore(t_triangle tri,
 				t_ray ray, t_tri_vars *v);
 // hit_world.c
 t_bool		hit_world(t_ray *ray_wld, const t_scene *scene, t_hit_record *out);
-// pt_utils1.c
-t_bool		hit_sphere(t_hit_record *hit, t_sphere sphere, t_ray ray);
-t_bool		hit_plane(t_hit_record *hit, t_plane plane, t_ray ray);
-t_bool		hit_cylinder(t_hit_record *hit, t_mesh obj, t_ray ray);
-t_bool		hit_world(t_ray *ray_wld, const t_scene *scene, t_hit_record *out);
-// pt_utils2.c
+// pt_utils.c
 void		ft_init_random_seed(unsigned int *seed);
 float		ft_random_float(float min, float max, unsigned int *seed);
 t_vec3		ft_normalize(t_vec3 vector);
 t_vec3		get_dir(t_vec3 origine, t_vec3 dest);
 float		get_dist(t_vec3 p1, t_vec3 p2);
-// pt_utils3.c
 // ray_utils.c
 t_vec3		ft_ray_at(t_ray r, double t);
 t_vec3		mat4_mul_vec3(t_mat4 m, t_vec3 v, double w);
