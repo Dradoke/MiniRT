@@ -16,18 +16,18 @@ t_bool	parse_brightness(char *str, t_f32 *brightness)
 	return (TRUE);
 }
 
-/// @brief Converts str in t_ui8 representing the AOV in range [0:180]
-/// @param str String with 1 integer number [0:180]
-/// @param aov Address of t_ui8 var where converted values will be stored
+/// @brief Converts str in t_ui8 representing the AOV in range [0:360]
+/// @param str String with 1 integer number [0:360]
+/// @param aov Address of t_ui16 var where converted values will be stored
 /// @return t_bool
 /// @retval 1 / TRUE	- If successful
 /// @retval 0 / FALSE	- If error
-t_bool	parse_aov(char *str, t_ui8 *aov)
+t_bool	parse_aov(char *str, t_ui16 *aov)
 {
 	if (!str)
 		return (FALSE);
-	*aov = (t_ui8)ft_atoi(str);
-	if (*aov > 180)
+	*aov = (t_ui16)ft_atoi(str);
+	if (*aov > 360)
 		return (FALSE);
 	return (TRUE);
 }

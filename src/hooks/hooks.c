@@ -81,7 +81,7 @@ static void	ft_start_progressive_render(t_data *data)
 {
 	if (!mlx_resize_image(data->img, data->mlx->width, data->mlx->height))
 		return ;
-	data->block_size = 16;
+	data->block_size = MAX_BLOCK_SIZE;
 	data->flags[NEED_RENDER] = FALSE;
 	data->flags[IS_RENDERING] = TRUE;
 }

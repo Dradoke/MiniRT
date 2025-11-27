@@ -40,9 +40,9 @@ static t_vec3	get_standing_movement(t_data *data)
 		data->scene.cam.matrix[NORMAL][2][2]}};
 	fwd_ground = vec3_normalize(fwd_ground);
 	right = vec3_normalize(vec3_cross(fwd_ground, (t_vec3){{0, 1, 0}}));
-	if (data->keys[FTKEY_W])
-		move = vec3_add(move, vec3_scale(fwd_ground, MOVE_SPEED));
 	if (data->keys[FTKEY_S])
+		move = vec3_add(move, vec3_scale(fwd_ground, MOVE_SPEED));
+	if (data->keys[FTKEY_W])
 		move = vec3_add(move, vec3_scale(fwd_ground, -MOVE_SPEED));
 	if (data->keys[FTKEY_D])
 		move = vec3_add(move, vec3_scale(right, MOVE_SPEED));
@@ -60,9 +60,9 @@ static t_vec3	get_plane_movement(t_data *data)
 	fwd = (t_vec3){{data->scene.cam.matrix[NORMAL][0][2],
 		data->scene.cam.matrix[NORMAL][1][2],
 		data->scene.cam.matrix[NORMAL][2][2]}};
-	if (data->keys[FTKEY_W])
-		move = vec3_add(move, vec3_scale(fwd, MOVE_SPEED));
 	if (data->keys[FTKEY_S])
+		move = vec3_add(move, vec3_scale(fwd, MOVE_SPEED));
+	if (data->keys[FTKEY_W])
 		move = vec3_add(move, vec3_scale(fwd, -MOVE_SPEED));
 	return (move);
 }

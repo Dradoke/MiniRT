@@ -110,7 +110,7 @@ typedef struct s_cam
 	t_ui8	mode;
 	t_vec3	location;
 	t_vec3	direction;
-	t_ui8	aov;
+	t_ui16	aov;
 }	t_cam;
 
 //•••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••• LIGHT

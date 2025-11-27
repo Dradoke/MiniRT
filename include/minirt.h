@@ -11,6 +11,8 @@
 
 # define RESIZE_DEBOUNCE_TIME 0.15
 
+# define MAX_BLOCK_SIZE 2
+
 //••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
 
 # include <unistd.h>		// read, write, close
