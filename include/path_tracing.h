@@ -1,5 +1,5 @@
-#ifndef RESTIR_H
-# define RESTIR_H
+#ifndef PATH_TRACING_H
+# define PATH_TRACING_H
 # include "minirt.h"
 
 /// @file restir.h

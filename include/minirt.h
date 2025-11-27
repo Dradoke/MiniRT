@@ -28,7 +28,7 @@
 # include "fterr.h"
 # include "struct.h"
 # include "prototype.h"
-# include "restir.h"
+# include "path_tracing.h"
 
 //••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
 #endif
