@@ -40,13 +40,13 @@ static t_vec3	get_standing_movement(t_data *data)
 		data->scene.cam.matrix[NORMAL][2][2]}};
 	fwd_ground = vec3_normalize(fwd_ground);
 	right = vec3_normalize(vec3_cross(fwd_ground, (t_vec3){{0, 1, 0}}));
-	if (data->keys[FTKEY_S])
-		move = vec3_add(move, vec3_scale(fwd_ground, MOVE_SPEED));
 	if (data->keys[FTKEY_W])
 		move = vec3_add(move, vec3_scale(fwd_ground, -MOVE_SPEED));
-	if (data->keys[FTKEY_D])
-		move = vec3_add(move, vec3_scale(right, MOVE_SPEED));
+	if (data->keys[FTKEY_S])
+		move = vec3_add(move, vec3_scale(fwd_ground, MOVE_SPEED));
 	if (data->keys[FTKEY_A])
+		move = vec3_add(move, vec3_scale(right, MOVE_SPEED));
+	if (data->keys[FTKEY_D])
 		move = vec3_add(move, vec3_scale(right, -MOVE_SPEED));
 	return (move);
 }
@@ -77,9 +77,9 @@ static void	apply_roll_rotation(t_data *data)
 
 	angle = 0.0f;
 	if (data->keys[FTKEY_A])
-		angle = ROLL_SPEED;
-	if (data->keys[FTKEY_D])
 		angle = -ROLL_SPEED;
+	if (data->keys[FTKEY_D])
+		angle = ROLL_SPEED;
 	if (angle == 0.0f)
 		return ;
 	fwd = (t_vec3){{data->scene.cam.matrix[NORMAL][0][2],

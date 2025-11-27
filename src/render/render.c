@@ -41,41 +41,6 @@ static t_vec3	rotate_vector(t_vec3 v, t_vec3 rotation)
 	return (rotated_v);
 }
 
-static t_rgba	shoot_ray(t_ray *ray, t_scene *scene)
-{
-	t_rgba	color;
-	double	ax;
-	double	ay;
-	double	az;
-
-	(void)scene;
-	ax = fabs(ray->dir.x);
-	ay = fabs(ray->dir.y);
-	az = fabs(ray->dir.z);
-	if (ax > ay && ax > az)
-	{
-		if (ray->dir.x > 0)
-			color.color = 0x6464FFFF; // X+ Bleu Clair (R=100, G=100, B=255)
-		else
-			color.color = 0x000064FF; // X- Bleu Foncé (R=0, G=0, B=100)
-	}
-	else if (ay > ax && ay > az)
-	{
-		if (ray->dir.y > 0)
-			color.color = 0xFF6464FF; // Y+ Rouge Clair (R=255, G=100, B=100)
-		else
-			color.color = 0x640000FF; // Y- Rouge Foncé (R=100, G=0, B=0)
-	}
-	else
-	{
-		if (ray->dir.z > 0)
-			color.color = 0x64FF64FF; // Z+ Vert Clair (R=100, G=255, B=100)
-		else
-			color.color = 0x006400FF; // Z- Vert Foncé (R=0, G=100, B=0)
-	}
-	return (color);
-}
-
 static void	perspective(t_data *data, t_ray *ray, uint32_t x, uint32_t y)
 {
 	double	aspect_ratio;
@@ -139,7 +104,7 @@ void	render_at_size(t_data *data, t_ray *ray, t_i32 block_size)
 				fisheye(data, ray, data->screen[X] + block_size / 2, data->screen[Y] + block_size / 2);
 			else
 				perspective(data, ray, data->screen[X] + block_size / 2, data->screen[Y] + block_size / 2);
-			ft_fill_block(data, block_size, shoot_ray(ray, &data->scene).color);
+			ft_fill_block(data, block_size, ft_rgba_to_uint(trace_ray(*ray, data->scene, MAX_DEPTH, data->flags)));
 			data->screen[X] += block_size;
 		}
 		data->screen[Y] += block_size;

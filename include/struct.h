@@ -34,6 +34,7 @@ typedef enum e_flags
 	FISHEYE,
 	NEED_RENDER,
 	IS_RENDERING,
+	REFLECT,
 	MOVED,
 	FLAG_COUNT,
 }	t_flags;
@@ -200,6 +201,7 @@ typedef struct s_scene
 	t_point_light	*light;
 	t_mesh			*mesh;
 	t_i32			obj_count[2];
+	t_ui32			seed;
 }	t_scene;
 
 typedef struct s_data

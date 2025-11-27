@@ -61,6 +61,14 @@ static void	ft_key_hook(mlx_key_data_t keydata, void *param)
 		data->flags[FISHEYE] = !data->flags[FISHEYE];
 		data->flags[NEED_RENDER] = TRUE;
 	}
+	if (keydata.key == MLX_KEY_R && keydata.action == MLX_PRESS)
+	{
+		if (data->flags[REFLECT])
+			data->flags[REFLECT] = FALSE;
+		else
+			data->flags[REFLECT] = TRUE;
+		data->flags[NEED_RENDER] = TRUE;
+	}
 }
 
 static void	ft_resize(int32_t width, int32_t height, void *param)

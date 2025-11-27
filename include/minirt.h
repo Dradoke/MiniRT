@@ -7,11 +7,11 @@
 
 # define CAM_SENSI 0.01
 # define MOVE_SPEED 1.0
-# define ROLL_SPEED 1.0
+# define ROLL_SPEED 0.1
 
 # define RESIZE_DEBOUNCE_TIME 0.15
 
-# define MAX_BLOCK_SIZE 2
+# define MAX_BLOCK_SIZE 8
 
 //••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
 
@@ -30,6 +30,7 @@
 # include "fterr.h"
 # include "struct.h"
 # include "prototype.h"
+# include "restir.h"
 
 //••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
 #endif
