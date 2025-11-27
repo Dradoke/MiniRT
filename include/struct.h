@@ -101,7 +101,7 @@ typedef struct s_ray
 	t_vec3	dir;
 }	t_ray;
 
-typedef t_f32 t_mat4[4][4];
+typedef t_f32	t_mat4[4][4];
 
 //••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••• CAMERA
 

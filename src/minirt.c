@@ -14,7 +14,7 @@ int	main(int ac, char **av)
 {
 	t_data	*data;
 
-	if (ac != 2)
+	if (ac < 2)
 		return (EXIT_FAILURE);
 	data = ft_calloc(sizeof(t_data));
 	if (!data)

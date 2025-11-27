@@ -11,7 +11,7 @@
 
 # define RESIZE_DEBOUNCE_TIME 0.15
 
-# define MAX_BLOCK_SIZE 8
+# define MAX_BLOCK_SIZE 32
 
 //••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
 

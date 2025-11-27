@@ -9,7 +9,13 @@
 void	see_data(t_data *data);
 
 //•••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••hooks
+// hooks.c
 void	ft_hooks(t_data *data);
+// keys.c
+void	ft_key_hook(mlx_key_data_t keydata, void *param);
+// mouse.c
+void	ft_mouse_hook(mouse_key_t button, action_t action,
+			modifier_key_t mods, void *param);
 
 //••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••parser
 // ft_lst_to_arr.c
