@@ -164,7 +164,6 @@ t_vec3		ft_cross(t_vec3 a, t_vec3 b);
 t_vec3		ft_vec3_scale(t_vec3 v, float s);
 t_vec3		ft_vec3_add(t_vec3 v1, t_vec3 v2);
 t_vec3		ft_vec3_sub(t_vec3 v1, t_vec3 v2);
-t_vec3		ft_vec3_mul(t_vec3 v, float s);
 // ft_vec3_utils2.c
 float		ft_get_scalaire(t_vec3 vec1, t_vec3 vec2);
 t_vec3		ft_vec3_neg(t_vec3 v);
@@ -211,7 +210,6 @@ float		get_dist(t_vec3 p1, t_vec3 p2);
 // ray_utils.c
 t_vec3		ft_ray_at(t_ray r, double t);
 t_vec3		mat4_mul_vec3(t_mat4 m, t_vec3 v, double w);
-t_ray		transform_ray_world_to_local(t_ray r, t_mat4 inv);
 // rgba_utils.c
 t_rgb		rgba_to_rgb(t_rgba c);
 t_rgba		rgb_to_rgba(t_rgb c);
