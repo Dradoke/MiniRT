@@ -17,7 +17,7 @@
 // Returns the new string or NULL if allocation fails.
 char	*ft_strmapi(char const *s, char (*f)(t_ui32, char))
 {
-	char			*result;
+	char	*result;
 	t_ui32	i;
 
 	if (!s || !f)
