@@ -11,8 +11,8 @@ t_vec3	get_local_dir(unsigned int *seed)
 	float	phi;
 	t_vec3	d_local;
 
-	r1 = ft_random_float(0, 1, seed);
-	r2 = ft_random_float(0, 1, seed);
+	r1 = ft_random_float(RANDF_MIN, RANDF_MAX, seed);
+	r2 = ft_random_float(RANDF_MIN, RANDF_MAX, seed);
 	phi = 2.0 * PI * r2;
 	d_local.x = cos(phi) * sqrt(1 - r1);
 	d_local.y = sinf(phi) * sqrt(1 - r1);

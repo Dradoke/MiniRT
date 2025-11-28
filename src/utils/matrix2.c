@@ -1,9 +1,10 @@
 #include "minirt.h"
 
-void	mat4_identity(t_mat4 *out)
+void	mat4_multiply(t_mat4 *out, const t_mat4 a, const t_mat4 b)
 {
-	t_i32	i;
-	t_i32	j;
+	t_mat4	result;
+	int		i;
+	int		j;
 
 	i = 0;
 	while (i < 4)
@@ -11,53 +12,15 @@ void	mat4_identity(t_mat4 *out)
 		j = 0;
 		while (j < 4)
 		{
-			if (i == j)
-				(*out)[i][j] = 1.0f;
-			else
-				(*out)[i][j] = 0.0f;
+			result[i][j] = a[i][0] * b[0][j]
+				+ a[i][1] * b[1][j]
+				+ a[i][2] * b[2][j]
+				+ a[i][3] * b[3][j];
 			j++;
 		}
 		i++;
 	}
-}
-
-void	mat4_translation(t_mat4 *out, t_vec3 v)
-{
-	mat4_identity(out);
-	(*out)[0][3] = v.x;
-	(*out)[1][3] = v.y;
-	(*out)[2][3] = v.z;
-}
-
-void	mat4_scaling(t_mat4 *out, t_vec3 v)
-{
-	mat4_identity(out);
-	(*out)[0][0] = v.x;
-	(*out)[1][1] = v.y;
-	(*out)[2][2] = v.z;
-}
-
-void    mat4_multiply(t_mat4 *out, const t_mat4 a, const t_mat4 b)
-{
-    t_mat4    result;
-    int        i;
-    int        j;
-
-    i = 0;
-    while (i < 4)
-    {
-        j = 0;
-        while (j < 4)
-        {
-            result[i][j] = a[i][0] * b[0][j]
-                + a[i][1] * b[1][j]
-                + a[i][2] * b[2][j]
-                + a[i][3] * b[3][j];
-            j++;
-        }
-        i++;
-    }
-    memcpy(*out, result, sizeof(t_mat4));
+	memcpy(*out, result, sizeof(t_mat4));
 }
 
 void	mat4_rotation_y(t_mat4 *out, t_f32 angle)

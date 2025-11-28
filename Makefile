@@ -5,7 +5,7 @@ NAME			=	minirt
 
 # Compiler Setting
 CC				=	cc
-CFLAG			=	-Wall -Wextra -Werror -g3
+CFLAG			=	-Wall -Wextra -Werror -g3 -O3 -march=native -ffast-math
 
 # Directory
 INC_DIR			=	include/
@@ -17,12 +17,64 @@ SRC_DIR			=	src/
 
 # Source File
 SRC				=	$(addprefix src/, \
-					minirt.c \
 					$(DEBUG) \
 					$(HOOKS) \
 					$(PARSER) \
 					$(RENDER) \
 					$(UTILS) \
+					$(PATH_TRACER) \
+					minirt.c \
+					$(DEBUG) \
+					$(HOOKS) \
+					$(PARSER) \
+					$(RENDER) \
+					)
+PATH_TRACER		=	$(addprefix path_tracer/, \
+					$(SIMPLE_TRACER) \
+					ft_vec3_utils1.c \
+					hit_cylinder_utils.c \
+					hit_cylinder_utils2.c \
+					hit_meshes.c \
+					hit_world.c \
+					ft_vec3_utils2.c \
+					pt_utils.c \
+					ray_utils.c \
+					rgba_utils.c \
+					rgba_utils2.c \
+					)
+
+SIMPLE_TRACER	=	$(addprefix simple_tracer/, \
+					st_utils.c \
+					st_utils2.c \
+					st_utils3.c \
+					st.c \
+					)
+
+DEBUG			=	$(addprefix debug/, \
+					see_data.c \
+					)
+
+HOOKS			=	$(addprefix hooks/, \
+					hooks.c \
+					keys.c \
+					mouse.c \
+					)
+
+PARSER			=	$(addprefix parser/, \
+					ft_lst_to_arr.c \
+					ft_parser.c \
+					ft_transform_utils.c \
+					parse_mesh.c \
+					parse_unique.c \
+					parse_value_1.c \
+					parse_value_2.c \
+					)
+
+RENDER			=	$(addprefix render/, \
+					cam_utils.c \
+					cam.c \
+					projection.c \
+					render.c \
 					$(PATH_TRACER) \
 					)
 
@@ -74,6 +126,7 @@ UTILS			=	$(addprefix utils/, \
 					ft_error.c \
 					matrix.c \
 					matrix2.c \
+					matrix3.c \
 					vector1.c \
 					vector2.c \
 					)

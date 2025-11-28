@@ -80,7 +80,7 @@ static char	*get_cam_mode_name(t_ui8 mode)
 	return ("UNKNOWN");
 }
 
-static void	see_camera(t_cam *cam, int indent)
+void	see_camera(t_cam *cam, int indent)
 {
 	int	i;
 
@@ -95,7 +95,7 @@ static void	see_camera(t_cam *cam, int indent)
 		printf("  ");
 	printf("%sMode:%s %s\n", CYAN, RESET, get_cam_mode_name(cam->mode));
 	see_vec3(cam->location, "Location", indent + 1);
-	see_vec3(cam->rotation, "Rotation", indent + 1);
+	see_vec3(cam->direction, "Direction", indent + 1);
 	i = 0;
 	while (i++ < indent + 1)
 		printf("  ");
@@ -134,7 +134,7 @@ static void	see_sphere(t_sphere *sp, int indent)
 static void	see_plane(t_plane *pl, int indent)
 {
 	see_vec3(pl->location, "Location", indent);
-	see_vec3(pl->rotation, "Rotation", indent);
+	see_vec3(pl->direction, "Direction", indent);
 	see_rgba(pl->color, "Color", indent);
 }
 
@@ -143,7 +143,7 @@ static void	see_cylinder(t_cylinder *cy, int indent)
 	int	i;
 
 	see_vec3(cy->location, "Location", indent);
-	see_vec3(cy->rotation, "Rotation", indent);
+	see_vec3(cy->direction, "Direction", indent);
 	i = 0;
 	while (i++ < indent)
 		printf("  ");
@@ -205,8 +205,6 @@ static void	see_mesh(t_mesh *mesh, int indent, int idx)
 		printf("  ");
 	printf("%s[MESH #%d - %s]%s @%p\n", BOLD BLUE, idx,
 		get_type_name(mesh->type), RESET, (void *)mesh);
-	see_mat4(mesh->matrix[NORMAL], "Transform", indent + 1);
-	see_mat4(mesh->matrix[INVERTED], "Inv Transform", indent + 1);
 	see_mesh_data(mesh, indent + 1);
 }
 

@@ -33,7 +33,9 @@ typedef enum e_flags
 	RMB,
 	FISHEYE,
 	NEED_RENDER,
+	IS_RENDERING,
 	REFLECT,
+	MOVED,
 	FLAG_COUNT,
 }	t_flags;
 
@@ -99,7 +101,7 @@ typedef struct s_ray
 	t_vec3	dir;
 }	t_ray;
 
-typedef t_f32 t_mat4[4][4];
+typedef t_f32	t_mat4[4][4];
 
 //••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••• CAMERA
 
@@ -108,8 +110,8 @@ typedef struct s_cam
 	t_mat4	matrix[2];
 	t_ui8	mode;
 	t_vec3	location;
-	t_vec3	rotation;
-	t_ui8	aov;
+	t_vec3	direction;
+	t_ui16	aov;
 }	t_cam;
 
 //•••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••• LIGHT
@@ -139,14 +141,14 @@ typedef struct s_sphere
 typedef struct s_plane
 {
 	t_vec3	location;
-	t_vec3	rotation;
+	t_vec3	direction;
 	t_rgba	color;
 }	t_plane;
 
 typedef struct s_cylinder
 {
 	t_vec3			location;
-	t_vec3			rotation;
+	t_vec3			direction;
 	t_f32			diameter;
 	t_f32			height;
 	t_rgba			color;
@@ -163,7 +165,6 @@ typedef struct s_triangle
 typedef struct s_mesh
 {
 	t_type	type;
-	t_mat4	matrix[2];
 	union
 	{
 		t_sphere	sphere;
@@ -199,7 +200,7 @@ typedef struct s_scene
 	t_point_light	*light;
 	t_mesh			*mesh;
 	t_i32			obj_count[2];
-	unsigned int	seed;
+	t_ui32			seed;
 }	t_scene;
 
 typedef struct s_data
@@ -214,6 +215,8 @@ typedef struct s_data
 	t_f64		mouse_dx;
 	t_f64		mouse_dy;
 	t_f64		last_resize_time;
+	t_i32		screen[2];
+	t_ui16		block_size;
 }	t_data;
 
 //••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••

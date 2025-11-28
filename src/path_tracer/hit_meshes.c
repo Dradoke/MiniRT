@@ -42,19 +42,19 @@ t_bool	hit_plane(t_hit_record *hit, t_plane plane, t_ray ray)
 	double	denom;
 	double	t;
 
-	denom = ft_vec3_dot(plane.rotation, ray.dir);
+	denom = ft_vec3_dot(plane.direction, ray.dir);
 	if (fabs(denom) < EPS)
 		return (FALSE);
-	t = ft_vec3_dot(ft_vec3_sub(plane.location, ray.origin), plane.rotation)
+	t = ft_vec3_dot(ft_vec3_sub(plane.location, ray.origin), plane.direction)
 		/ denom;
 	if (t < EPS)
 		return (FALSE);
 	hit->t = t;
 	hit->p = ft_ray_at(ray, hit->t);
-	if (ft_vec3_dot(ray.dir, plane.rotation) < 0)
-		hit->n = plane.rotation;
+	if (ft_vec3_dot(ray.dir, plane.direction) < 0)
+		hit->n = plane.direction;
 	else
-		hit->n = ft_vec3_neg(plane.rotation);
+		hit->n = ft_vec3_neg(plane.direction);
 	hit->n = ft_normalize(hit->n);
 	return (TRUE);
 }
