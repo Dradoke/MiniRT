@@ -60,3 +60,4 @@ test.c
 
 # Folder not needed
 .vscode/
+obj/
