@@ -166,10 +166,14 @@ $(LIBFT):
 
 # MLX42 Make Rule
 $(MLX42):
-	@cmake $(MLX42_DIR) -B $(MLX42_DIR)/build && make -C $(MLX42_DIR)/build -j4
+	@[ -d "$(MLX42_DIR)/.git" ] || git clone --depth 1 https://github.com/codam-coding-college/MLX42.git $(MLX42_DIR)
+	@cd $(MLX42_DIR) && git pull --rebase --autostash 2>/dev/null || true
+	@cd $(MLX42_DIR) && git submodule update --init --recursive
+	@cmake -S $(MLX42_DIR) -B $(MLX42_DIR)/build
+	@cmake --build $(MLX42_DIR)/build -j4
 
 # Main Target
-$(NAME): $(OBJ) $(LIBFT) $(MLX42)
+$(NAME): $(MLX42) $(OBJ) $(LIBFT) 
 	@$(CC) $(CFLAG) $(OBJ) $(LIBFT) $(MLX42) $(MLX_DEPS) -o $(NAME)
 	@echo "Welcome $@ ! 🤩🤙"
 
