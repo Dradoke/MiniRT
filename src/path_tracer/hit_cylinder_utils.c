@@ -15,7 +15,7 @@ double	dot(t_vec3 a, t_vec3 b)
 /// @param ray The ray
 void	init_cylinder_vars(t_cyl_vars *v, t_cylinder cyl, t_ray ray)
 {
-	v->axis = ft_normalize(cyl.rotation);
+	v->axis = ft_normalize(cyl.direction);
 	v->oc = ft_vec3_sub(ray.origin, cyl.location);
 	v->r = cyl.diameter * 0.5;
 	v->dd = dot(ray.dir, ray.dir);

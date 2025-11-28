@@ -24,10 +24,6 @@ SRC				=	$(addprefix src/, \
 					$(UTILS) \
 					$(PATH_TRACER) \
 					minirt.c \
-					$(DEBUG) \
-					$(HOOKS) \
-					$(PARSER) \
-					$(RENDER) \
 					)
 PATH_TRACER		=	$(addprefix path_tracer/, \
 					$(SIMPLE_TRACER) \
@@ -106,11 +102,14 @@ DEBUG			=	$(addprefix debug/, \
 
 HOOKS			=	$(addprefix hooks/, \
 					hooks.c \
+					keys.c \
+					mouse.c \
 					)
 
 PARSER			=	$(addprefix parser/, \
 					ft_lst_to_arr.c \
 					ft_parser.c \
+					ft_transform_utils.c \
 					parse_mesh.c \
 					parse_unique.c \
 					parse_value_1.c \
@@ -118,7 +117,9 @@ PARSER			=	$(addprefix parser/, \
 					)
 
 RENDER			=	$(addprefix render/, \
+					cam_utils.c \
 					cam.c \
+					projection.c \
 					render.c \
 					)
 
