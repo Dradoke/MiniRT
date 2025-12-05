@@ -11,7 +11,7 @@ void	ft_mouse_hook(mouse_key_t button, action_t action,
 	{
 		data->flags[RMB] = (action == MLX_PRESS);
 		if (data->flags[RMB])
-			mlx_set_cursor_mode(data->mlx, MLX_MOUSE_DISABLED);
+			mlx_set_cursor_mode(data->mlx, MLX_MOUSE_HIDDEN);
 		else
 			mlx_set_cursor_mode(data->mlx, MLX_MOUSE_NORMAL);
 	}

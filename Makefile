@@ -4,7 +4,7 @@
 NAME			=	minirt
 
 # Compiler Setting
-CC				=	cc
+CC				=	gcc
 CFLAG			=	-Wall -Wextra -Werror -g3 -O3 -march=native -ffast-math
 
 # Directory

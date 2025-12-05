@@ -51,9 +51,9 @@ static void	compute_inverse_matrices(t_mat4 *scale_m, t_vec3 loc,
 {
 	mat4_translation(inv_trans_m, (t_vec3){{-loc.x, -loc.y, -loc.z}});
 	mat4_scaling(inv_scale_m, (t_vec3){{
-		1.0f / *scale_m[0][0],
-		1.0f / *scale_m[1][1],
-		1.0f / *scale_m[2][2]}});
+		1.0f / (*scale_m)[0][0],
+		1.0f / (*scale_m)[1][1],
+		1.0f / (*scale_m)[2][2]}});
 }
 
 void	build_transform(t_node *node, t_mat4 *out_transform,
