@@ -35,7 +35,7 @@
 *.i*86
 *.x86_64
 *.hex
-minirt
+miniRT
 
 # Debug files
 *.dSYM/
@@ -60,3 +60,4 @@ test.c
 
 # Folder not needed
 .vscode/
+obj/
