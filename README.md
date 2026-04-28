@@ -1,6 +1,6 @@
-# SkibidiRT
+# MiniRT
 
-SkibidiRT is a Raytracing rendering engine (based on the 42 MiniRT project) developed in C using the MLX42 library. This project allows for the visualization of complex 3D scenes defined in configuration files, using ray tracing techniques to simulate light and materials.
+MiniRT is a Raytracing rendering engine (based on the 42 MiniRT project) developed in C using the MLX42 library. This project allows for the visualization of complex 3D scenes defined in configuration files, using ray tracing techniques to simulate light and materials.
 
 ## 🚀 Features
 
